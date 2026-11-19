@@ -1,43 +1,39 @@
-// Leonida Legend — Grand Theft Auto VI trophy checklist and platinum roadmap.
-// The page is static: it fetches app/data/trophies.json once, keeps earned
-// ticks in localStorage, and exports or imports that progress as a JSON file.
-// It makes no network request while it runs.
+// Leonida Legend — GTA VI trophy checklist and platinum roadmap, offline.
+// One fetch of app/data/trophies.json, ticks kept in localStorage, and the
+// progress can be saved out as JSON or read back in. Nothing here phones
+// home while the page runs.
 
-const STORE_PROGRESS = "gta6-trophy-checklist";
-const STORE_SPOILERS = "gta6-trophy-spoiler";
-const EXPORT_FILE = "gta6-trophy-progress.json";
-const GAME_NAME = "Grand Theft Auto VI";
-const HOURS_NOTE = "est. ~200 h to platinum";
+const KEY_PROGRESS = "gta6-trophy-checklist";
+const KEY_SPOILERS = "gta6-trophy-spoiler";
+const EXPORT_NAME = "gta6-trophy-progress.json";
+const GAME_TITLE = "Grand Theft Auto VI";
+const HOURS_LINE = "est. ~200 h to platinum";
 
-/* ------------------------------------------------------------------ */
-/* Small DOM helpers                                                   */
-/* ------------------------------------------------------------------ */
-function byId(id) {
+/* ---------- tiny DOM helpers ---------- */
+function el(id) {
   return document.getElementById(id);
 }
 
-function makeEl(tag, className, text) {
-  const node = document.createElement(tag);
-  if (className) node.className = className;
-  if (text != null) node.textContent = text;
+function tag(name, cls, text) {
+  const node = document.createElement(name);
+  if (cls) node.className = cls;
+  if (text !== undefined && text !== null) node.textContent = text;
   return node;
 }
 
-function linkEl(name, url) {
+function extLink(label, href) {
   const a = document.createElement("a");
-  a.href = url;
-  a.textContent = name;
+  a.href = href;
+  a.textContent = label;
   a.target = "_blank";
   a.rel = "noopener";
   return a;
 }
 
-/* ------------------------------------------------------------------ */
-/* Stored progress                                                     */
-/* ------------------------------------------------------------------ */
-function readProgress() {
+/* ---------- saved progress ---------- */
+function loadEarned() {
   try {
-    const raw = localStorage.getItem(STORE_PROGRESS);
+    const raw = localStorage.getItem(KEY_PROGRESS);
     const parsed = raw ? JSON.parse(raw) : [];
     return new Set(Array.isArray(parsed) ? parsed : []);
   } catch {
@@ -45,210 +41,194 @@ function readProgress() {
   }
 }
 
-function saveProgress() {
-  localStorage.setItem(STORE_PROGRESS, JSON.stringify([...state.earned]));
+function storeEarned() {
+  localStorage.setItem(KEY_PROGRESS, JSON.stringify([...store.earned]));
 }
 
-function spoilersOn() {
-  return localStorage.getItem(STORE_SPOILERS) === "1";
+function spoilersHidden() {
+  return localStorage.getItem(KEY_SPOILERS) === "1";
 }
 
-function setSpoilersHidden(on) {
-  localStorage.setItem(STORE_SPOILERS, on ? "1" : "0");
+function setSpoilerPref(hidden) {
+  localStorage.setItem(KEY_SPOILERS, hidden ? "1" : "0");
 }
 
-const state = {
-  earned: readProgress(),
-  kind: "all",
+const store = {
+  earned: loadEarned(),
+  filter: "all",
   trophies: [],
-  lookup: new Map(),
+  byName: new Map(),
 };
 
-/* ------------------------------------------------------------------ */
-/* Roadmap copy. Stage 1 holds the game's only confirmed missable, so  */
-/* it comes first; the rest follow the order the guide recommends.      */
-/* ------------------------------------------------------------------ */
-const ROADMAP = [
-  [1, "First: the one missable", "Do Lucia’s Chapter 1 balcony meditation before Chapter 1 ends — it vanishes afterwards and there is no mission replay. Make a manual Chapter 1 save first."],
-  [2, "Play the story", "Chapters 1–4, the final mission, and the named story missions. All unmissable — just play them in order."],
-  [3, "Stranger strands", "Eight stranger mission strands, ending with a finale each (Andy, Kenton, Billy, Randy, Tyrone, Bret). Do the Chapter 3 strand “Race Against Yago” while Chapter 3 is current — it is time-sensitive."],
-  [4, "Activities & skills", "Races, stunts, shooting range, drone races, heists, vaults, robberies, wanted-level feats and the long-haul counters. The bulk of the post-story grind."],
-  [5, "Collectibles & exploration", "Cards, WAiNK spots, vehicles, garages and every area of Leonida. Pick these up as you travel; finish the stragglers last."],
-  [6, "Cleanup & 100%", "70 of 80 Challenges, 200 of 277 vehicles, all 8 bank vaults, 300 stunts — the 100% checklist that ends with the platinum."],
+/* ---------- roadmap plan ----------
+   Stage 1 first: it holds the game's only confirmed missable. The rest
+   follow the order the guide recommends. */
+const PLAN = [
+  { no: 1, title: "First: the one missable", text: "Do Lucia’s Chapter 1 balcony meditation before Chapter 1 ends — it vanishes afterwards and there is no mission replay. Make a manual Chapter 1 save first." },
+  { no: 2, title: "Play the story", text: "Chapters 1–4, the final mission, and the named story missions. All unmissable — just play them in order." },
+  { no: 3, title: "Stranger strands", text: "Eight stranger mission strands, ending with a finale each (Andy, Kenton, Billy, Randy, Tyrone, Bret). Do the Chapter 3 strand “Race Against Yago” while Chapter 3 is current — it is time-sensitive." },
+  { no: 4, title: "Activities & skills", text: "Races, stunts, shooting range, drone races, heists, vaults, robberies, wanted-level feats and the long-haul counters. The bulk of the post-story grind." },
+  { no: 5, title: "Collectibles & exploration", text: "Cards, WAiNK spots, vehicles, garages and every area of Leonida. Pick these up as you travel; finish the stragglers last." },
+  { no: 6, title: "Cleanup & 100%", text: "70 of 80 Challenges, 200 of 277 vehicles, all 8 bank vaults, 300 stunts — the 100% checklist that ends with the platinum." },
 ];
 
-const KIND_NAMES = {
+const KIND_LABELS = {
   story: "Story",
   missable: "Missable",
   collectibles: "Collectibles",
   activities: "Activities",
 };
 
-/* ------------------------------------------------------------------ */
-/* Card builders                                                       */
-/* ------------------------------------------------------------------ */
-function gradePill(trophy) {
-  return makeEl("span", "grade grade-" + trophy.grade, trophy.grade);
+/* ---------- card builders ---------- */
+function gradeTag(trophy) {
+  return tag("span", "grade grade-" + trophy.grade, trophy.grade);
 }
 
-function kindPill(trophy) {
-  const label = KIND_NAMES[trophy.kind] || trophy.kind;
-  return makeEl("span", "kind", label);
+function kindTag(trophy) {
+  return tag("span", "kind", KIND_LABELS[trophy.kind] || trophy.kind);
 }
 
-function flagPill(className, text, title) {
-  const pill = makeEl("span", "badge " + className, text);
+function flagTag(cls, text, title) {
+  const pill = tag("span", "badge " + cls, text);
   if (title) pill.title = title;
   return pill;
 }
 
-function trophyCard(trophy) {
-  const got = state.earned.has(trophy.name);
-  const concealed = spoilersOn() && trophy.hidden && !got;
-  const article = makeEl("article", "card" + (got ? " earned" : ""));
+function buildCard(trophy) {
+  const got = store.earned.has(trophy.name);
+  const hidden = spoilersHidden() && trophy.hidden && !got;
+  const article = tag("article", "card" + (got ? " earned" : ""));
 
-  const head = makeEl("div", "card-head");
+  const head = tag("div", "card-head");
   const tick = document.createElement("input");
   tick.type = "checkbox";
   tick.checked = got;
-  tick.setAttribute("aria-label", "Mark " + (concealed ? "hidden story trophy" : trophy.name) + " earned");
+  tick.setAttribute("aria-label", "Mark " + (hidden ? "hidden story trophy" : trophy.name) + " earned");
   tick.addEventListener("change", () => {
-    if (tick.checked) state.earned.add(trophy.name);
-    else state.earned.delete(trophy.name);
-    saveProgress();
-    paint();
+    if (tick.checked) store.earned.add(trophy.name);
+    else store.earned.delete(trophy.name);
+    storeEarned();
+    renderAll();
   });
   head.append(tick);
-  head.append(makeEl("h3", null, concealed ? "Hidden story trophy" : trophy.name));
-  head.append(gradePill(trophy), kindPill(trophy));
-  if (trophy.missable && trophy.kind !== "missable") {
-    head.append(flagPill("missable", "MISSABLE"));
-  }
-  if (trophy.at_risk) {
-    head.append(flagPill("atrisk", "TIME-SENSITIVE", trophy.at_risk));
-  }
-  if (trophy.unconfirmed) {
-    head.append(flagPill("unconf", "COUNT UNCONFIRMED", "This count comes from launch-week lists and has not been independently re-verified."));
-  }
+  head.append(tag("h3", null, hidden ? "Hidden story trophy" : trophy.name));
+  head.append(gradeTag(trophy));
+  head.append(kindTag(trophy));
+  if (trophy.missable && trophy.kind !== "missable") head.append(flagTag("missable", "MISSABLE"));
+  if (trophy.at_risk) head.append(flagTag("atrisk", "TIME-SENSITIVE", trophy.at_risk));
+  if (trophy.unconfirmed) head.append(flagTag("unconf", "COUNT UNCONFIRMED", "This count comes from launch-week lists and has not been independently re-verified."));
   article.append(head);
 
-  article.append(makeEl("p", "desc", concealed ? "Complete this story moment to reveal it." : trophy.description));
+  article.append(tag("p", "desc", hidden ? "Complete this story moment to reveal it." : trophy.description));
 
-  if (concealed) {
-    article.append(makeEl("p", "guide hidden-note", "Guide hidden until earned — turn off “Hide story spoilers” to read it now."));
+  if (hidden) {
+    article.append(tag("p", "guide hidden-note", "Guide hidden until earned — turn off “Hide story spoilers” to read it now."));
     return article;
   }
 
-  article.append(makeEl("p", "guide", trophy.guide));
+  article.append(tag("p", "guide", trophy.guide));
   if (trophy.steps && trophy.steps.length > 0) {
-    const steps = makeEl("ol", "steps");
-    for (const step of trophy.steps) steps.append(makeEl("li", null, step));
+    const steps = tag("ol", "steps");
+    trophy.steps.forEach((step) => steps.append(tag("li", null, step)));
     article.append(steps);
   }
-  const sources = makeEl("p", "sources", "Source: ");
+  const sources = tag("p", "sources", "Source: ");
   trophy.sources.forEach((source, i) => {
     if (i > 0) sources.append(document.createTextNode(" · "));
-    sources.append(linkEl(source.name, source.url));
+    sources.append(extLink(source.name, source.url));
   });
   article.append(sources);
   return article;
 }
 
-/* ------------------------------------------------------------------ */
-/* Filtering                                                           */
-/* ------------------------------------------------------------------ */
-function trophyMatches(trophy) {
-  const query = byId("search").value.trim().toLowerCase();
-  const grade = byId("grade").value;
-  if (state.kind !== "all" && trophy.kind !== state.kind) return false;
+/* ---------- filtering ---------- */
+function visible(trophy) {
+  const query = el("search").value.trim().toLowerCase();
+  const grade = el("grade").value;
+  if (store.filter !== "all" && trophy.kind !== store.filter) return false;
   if (grade !== "all" && trophy.grade !== grade) return false;
-  if (byId("earnedonly").checked && !state.earned.has(trophy.name)) return false;
+  if (el("earnedonly").checked && !store.earned.has(trophy.name)) return false;
   if (!query) return true;
-  return [trophy.name, trophy.description, trophy.guide].some((field) =>
-    field.toLowerCase().includes(query),
-  );
+  const haystacks = [trophy.name, trophy.description, trophy.guide];
+  return haystacks.some((field) => field.toLowerCase().includes(query));
 }
 
-/* ------------------------------------------------------------------ */
-/* Rendering                                                           */
-/* ------------------------------------------------------------------ */
-function paintTotals() {
-  const total = state.trophies.length;
-  const got = state.earned.size;
+/* ---------- rendering ---------- */
+function renderTotals() {
+  const total = store.trophies.length;
+  const got = store.earned.size;
   const pct = Math.round((got / total) * 100);
-  byId("totals").textContent = got + " of " + total + " trophies earned · " + pct + "% to the platinum";
-  byId("barfill").style.width = pct + "%";
+  el("totals").textContent = got + " of " + total + " trophies earned · " + pct + "% to the platinum";
+  el("barfill").style.width = pct + "%";
   const counts = { platinum: [0, 0], gold: [0, 0], silver: [0, 0], bronze: [0, 0] };
-  for (const trophy of state.trophies) {
+  store.trophies.forEach((trophy) => {
     counts[trophy.grade][1] += 1;
-    if (state.earned.has(trophy.name)) counts[trophy.grade][0] += 1;
-  }
-  byId("stats").textContent =
+    if (store.earned.has(trophy.name)) counts[trophy.grade][0] += 1;
+  });
+  el("stats").textContent =
     ["platinum", "gold", "silver", "bronze"]
       .map((grade) => counts[grade][0] + "/" + counts[grade][1] + " " + grade)
-      .join(" · ") + " · " + HOURS_NOTE;
+      .join(" · ") + " · " + HOURS_LINE;
 }
 
-function paintList() {
-  const shown = state.trophies.filter(trophyMatches);
-  const list = byId("list");
+function renderList() {
+  const shown = store.trophies.filter(visible);
+  const list = el("list");
   list.replaceChildren();
-  for (const trophy of shown) list.append(trophyCard(trophy));
-  const total = state.trophies.length;
-  byId("count").textContent =
+  shown.forEach((trophy) => list.append(buildCard(trophy)));
+  const total = store.trophies.length;
+  el("count").textContent =
     shown.length === total
       ? "Showing all " + total + " trophies."
       : "Showing " + shown.length + " of " + total + " trophies.";
 }
 
-function paintRoadmap() {
-  const road = byId("roadmap");
+function renderRoadmap() {
+  const road = el("roadmap");
   road.replaceChildren();
-  for (const [no, heading, body] of ROADMAP) {
-    const section = makeEl("section", "stage");
-    section.append(makeEl("h3", null, "Stage " + no + " — " + heading));
-    section.append(makeEl("p", "stage-text", body));
-    const inStage = state.trophies.filter((t) => t.stage === no);
-    const done = inStage.filter((t) => state.earned.has(t.name)).length;
-    section.append(makeEl("p", "stage-meta", done + "/" + inStage.length + " earned in this stage"));
-    for (const trophy of inStage) section.append(trophyCard(trophy));
+  PLAN.forEach(({ no, title, text }) => {
+    const section = tag("section", "stage");
+    section.append(tag("h3", null, "Stage " + no + " — " + title));
+    section.append(tag("p", "stage-text", text));
+    const inStage = store.trophies.filter((t) => t.stage === no);
+    const done = inStage.filter((t) => store.earned.has(t.name)).length;
+    section.append(tag("p", "stage-meta", done + "/" + inStage.length + " earned in this stage"));
+    inStage.forEach((trophy) => section.append(buildCard(trophy)));
     road.append(section);
-  }
+  });
 }
 
-function paint() {
-  byId("spoiler").checked = spoilersOn();
-  paintTotals();
-  paintList();
-  paintRoadmap();
+function renderAll() {
+  el("spoiler").checked = spoilersHidden();
+  renderTotals();
+  renderList();
+  renderRoadmap();
 }
 
-/* ------------------------------------------------------------------ */
-/* Wiring                                                              */
-/* ------------------------------------------------------------------ */
-function wireChips() {
+/* ---------- wiring ---------- */
+function bindChips() {
   const chips = document.querySelectorAll("#kinds .chip");
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
       chips.forEach((other) => other.classList.remove("active"));
       chip.classList.add("active");
-      state.kind = chip.dataset.kind;
-      paint();
+      store.filter = chip.dataset.kind;
+      renderAll();
     });
   });
 }
 
-function wireControls() {
-  byId("search").addEventListener("input", paint);
-  byId("grade").addEventListener("change", paint);
-  byId("earnedonly").addEventListener("change", paint);
-  byId("spoiler").addEventListener("change", () => {
-    setSpoilersHidden(byId("spoiler").checked);
-    paint();
+function bindControls() {
+  el("search").addEventListener("input", renderAll);
+  el("grade").addEventListener("change", renderAll);
+  el("earnedonly").addEventListener("change", renderAll);
+  el("spoiler").addEventListener("change", () => {
+    setSpoilerPref(el("spoiler").checked);
+    renderAll();
   });
 }
 
-function downloadJson(filename, data) {
+function saveFile(filename, data) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -258,60 +238,58 @@ function downloadJson(filename, data) {
   URL.revokeObjectURL(url);
 }
 
-function wireExportImport() {
-  byId("export").addEventListener("click", () => {
-    downloadJson(EXPORT_FILE, { game: GAME_NAME, earned: [...state.earned] });
+function bindProgressIO() {
+  el("export").addEventListener("click", () => {
+    saveFile(EXPORT_NAME, { game: GAME_TITLE, earned: [...store.earned] });
   });
-  byId("import").addEventListener("change", async (event) => {
+  el("import").addEventListener("change", async (event) => {
     const file = event.target.files[0];
     if (!file) return;
     try {
       const parsed = JSON.parse(await file.text());
       const names = Array.isArray(parsed) ? parsed : parsed.earned;
-      const next = new Set((names || []).filter((name) => state.lookup.has(name)));
-      state.earned = next;
-      saveProgress();
-      paint();
+      const next = new Set((names || []).filter((name) => store.byName.has(name)));
+      store.earned = next;
+      storeEarned();
+      renderAll();
     } catch {
       alert("That file is not valid trophy progress JSON.");
     }
     event.target.value = "";
   });
-  byId("reset").addEventListener("click", () => {
+  el("reset").addEventListener("click", () => {
     if (confirm("Clear all earned ticks?")) {
-      state.earned = new Set();
-      saveProgress();
-      paint();
+      store.earned = new Set();
+      storeEarned();
+      renderAll();
     }
   });
 }
 
-function switchTab(which) {
+function showTab(which) {
   const checklist = which === "checklist";
-  byId("tab-checklist").classList.toggle("active", checklist);
-  byId("tab-roadmap").classList.toggle("active", !checklist);
-  byId("view-checklist").hidden = !checklist;
-  byId("view-roadmap").hidden = checklist;
+  el("tab-checklist").classList.toggle("active", checklist);
+  el("tab-roadmap").classList.toggle("active", !checklist);
+  el("view-checklist").hidden = !checklist;
+  el("view-roadmap").hidden = checklist;
 }
 
-function wireTabs() {
-  byId("tab-checklist").addEventListener("click", () => switchTab("checklist"));
-  byId("tab-roadmap").addEventListener("click", () => switchTab("roadmap"));
+function bindTabs() {
+  el("tab-checklist").addEventListener("click", () => showTab("checklist"));
+  el("tab-roadmap").addEventListener("click", () => showTab("roadmap"));
 }
 
-/* ------------------------------------------------------------------ */
-/* Boot                                                                */
-/* ------------------------------------------------------------------ */
-async function boot() {
+/* ---------- boot ---------- */
+async function start() {
   const response = await fetch("data/trophies.json");
   const doc = await response.json();
-  state.trophies = doc.trophies;
-  state.lookup = new Map(state.trophies.map((t) => [t.name, t]));
-  wireChips();
-  wireControls();
-  wireExportImport();
-  wireTabs();
-  paint();
+  store.trophies = doc.trophies;
+  store.byName = new Map(store.trophies.map((t) => [t.name, t]));
+  bindChips();
+  bindControls();
+  bindProgressIO();
+  bindTabs();
+  renderAll();
 }
 
-boot();
+start();
