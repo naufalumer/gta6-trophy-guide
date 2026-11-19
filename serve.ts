@@ -10,38 +10,31 @@ import { fileURLToPath } from "node:url";
 
 const APP_ROOT = resolve(fileURLToPath(new URL("./app", import.meta.url)));
 
-const MIME_TYPES = new Map([
-  [".html", "text/html; charset=utf-8"],
-  [".js", "text/javascript; charset=utf-8"],
-  [".mjs", "text/javascript; charset=utf-8"],
-  [".css", "text/css; charset=utf-8"],
-  [".json", "application/json; charset=utf-8"],
-  [".svg", "image/svg+xml"],
-  [".png", "image/png"],
-  [".jpg", "image/jpeg"],
-  [".jpeg", "image/jpeg"],
-  [".webp", "image/webp"],
-  [".ico", "image/x-icon"],
-  [".woff2", "font/woff2"],
-  [".webmanifest", "application/manifest+json"],
-]);
+const MIME_BY_EXT: Record<string, string> = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".mjs": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+  ".ico": "image/x-icon",
+  ".woff2": "font/woff2",
+  ".webmanifest": "application/manifest+json",
+};
 
-function mimeTypeFor(file: string): string {
-  return MIME_TYPES.get(extname(file).toLowerCase()) ?? "application/octet-stream";
+function mimeOf(file: string): string {
+  return MIME_BY_EXT[extname(file).toLowerCase()] ?? "application/octet-stream";
 }
 
-function replyText(res: ServerResponse, code: number, body: string): void {
+function sendText(res: ServerResponse, code: number, body: string): void {
   res.writeHead(code).end(body);
 }
 
-function pickPort(argv: string[]): number {
-  const at = argv.indexOf("--port");
-  const wanted = at === -1 ? 8080 : Number(argv[at + 1]);
-  if (Number.isInteger(wanted) && wanted > 0 && wanted < 65536) return wanted;
-  return 8080;
-}
-
-function resolveTarget(rawPath: string): string | null {
+function locateFile(rawPath: string): string | null {
   let path = rawPath;
   if (path.endsWith("/")) path += "index.html";
   const file = resolve(join(APP_ROOT, normalize(path)));
@@ -49,17 +42,24 @@ function resolveTarget(rawPath: string): string | null {
   return file;
 }
 
-function handleRequest(req: IncomingMessage, res: ServerResponse): void {
+function portFromArgs(argv: string[]): number {
+  const at = argv.indexOf("--port");
+  const wanted = at === -1 ? 8080 : Number(argv[at + 1]);
+  if (Number.isInteger(wanted) && wanted > 0 && wanted < 65536) return wanted;
+  return 8080;
+}
+
+function serve(req: IncomingMessage, res: ServerResponse): void {
   let pathname: string;
   try {
     pathname = decodeURIComponent(new URL(req.url ?? "/", "http://localhost").pathname);
   } catch {
-    replyText(res, 400, "bad request");
+    sendText(res, 400, "bad request");
     return;
   }
-  const file = resolveTarget(pathname);
+  const file = locateFile(pathname);
   if (file === null) {
-    replyText(res, 403, "forbidden");
+    sendText(res, 403, "forbidden");
     return;
   }
   let size: number;
@@ -68,18 +68,18 @@ function handleRequest(req: IncomingMessage, res: ServerResponse): void {
     if (!info.isFile()) throw new Error("not a file");
     size = info.size;
   } catch {
-    replyText(res, 404, "not found");
+    sendText(res, 404, "not found");
     return;
   }
   res.writeHead(200, {
-    "content-type": mimeTypeFor(file),
+    "content-type": mimeOf(file),
     "content-length": size,
     "cache-control": "no-store",
   });
   createReadStream(file).pipe(res);
 }
 
-const port = pickPort(process.argv.slice(2));
-createServer(handleRequest).listen(port, "127.0.0.1", () => {
+const port = portFromArgs(process.argv.slice(2));
+createServer(serve).listen(port, "127.0.0.1", () => {
   console.log(`app/ is on http://localhost:${port}`);
 });
