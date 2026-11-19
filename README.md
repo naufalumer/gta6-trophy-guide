@@ -4,15 +4,15 @@
 [![rank](https://make.fun/badge/gta6-trophy-guide-01/naufalumer/gta6-trophy-guide/rank.svg)](https://make.fun/bounty/gta6-trophy-guide-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-guide-01)
 [![reward](https://make.fun/badge/gta6-trophy-guide-01/naufalumer/gta6-trophy-guide/reward.svg)](https://make.fun/bounty/gta6-trophy-guide-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-trophy-guide-01)
 
-Leonida Legend — a GTA 6 trophy guide and tracker for Grand Theft Auto VI on PlayStation 5. All 55 trophies with their official names, descriptions and grades, an original guide for each one with a named source beside it, a spoiler setting that hides story trophies until earned, filters by kind and grade, search, saved progress with export/import, and a six-stage roadmap to the platinum. It flags the game's one confirmed missable (Positive Mental Attitude — Lucia's Chapter 1 balcony meditation) up front, and marks the four launch-week counts that have not been independently re-verified as unconfirmed instead of stating them as fact. Plain static files under `app/` — no build step, no network requests at run time, works offline.
+Leonida Legend is a fan-made guide and tracker for all 55 Grand Theft Auto VI trophies on PlayStation 5. Each trophy shows its official name, description and grade exactly as PlayStation lists them, next to an original guide written for this entry and the source it draws on. The tracker saves your progress in the browser and lets you export or import it; search, grade and kind filters, a spoiler setting for story trophies, and a six-stage roadmap walk you to the platinum. The one trophy that can actually be missed — Positive Mental Attitude, Lucia's Chapter 1 balcony meditation — is flagged first, and the four counts that launch-week lists could not confirm are marked unconfirmed rather than stated as fact. Everything is plain static files under `app/` with no build step and no network at run time, so it works fully offline.
 
-## Run it
+## Try it locally
 
 ```sh
 node serve.ts
 ```
 
-Then open http://localhost:8080.
+Then open http://localhost:8080 in a desktop browser.
 
 ---
 
