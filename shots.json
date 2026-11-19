@@ -1,1 +1,19 @@
-{"shots":[{"file":"1-checklist.jpg","view":"checklist"},{"file":"2-missable.jpg","kind":"missable","view":"checklist"},{"file":"3-roadmap.jpg","view":"roadmap"}],"viewport":{"height":800,"width":1280}}
+{
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "shots": [
+    {
+      "view": "checklist",
+      "file": "1-checklist.jpg"
+    },    {
+      "view": "checklist",
+      "kind": "missable",
+      "file": "2-missable.jpg"
+    },    {
+      "view": "roadmap",
+      "file": "3-roadmap.jpg"
+    }
+  ]
+}
