@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
   <title>Leonida Legend — GTA 6 Trophy Guide &amp; Tracker</title>
-  <meta name="description" content="All 55 Grand Theft Auto VI trophies: official names, descriptions and grades, original guides with named sources, a roadmap to the platinum, and a saved checklist. Works offline.">
+  <meta content="All 55 Grand Theft Auto VI trophies: official names, descriptions and grades, original guides with named sources, a roadmap to the platinum, and a saved checklist. Works offline." name="description">
   <link href="style.css" rel="stylesheet">
 </head>
 <body>
   <header class="hero">
-    <div class="cover-grid" aria-hidden="true">
+    <div aria-hidden="true" class="cover-grid">
       <img alt="" src="panels/heli.jpg">
       <img alt="" src="panels/couple.jpg">
       <img alt="" src="panels/bike.jpg">
@@ -25,7 +25,7 @@
       <h1>Leonida Legend</h1>
       <p class="sub">Every trophy, in your own words, with a source beside each guide — plus a roadmap to the platinum. No sign-in, no network: progress lives in your browser.</p>
       <div class="totals" id="totals">Loading 55 trophies…</div>
-      <div class="bar" role="progressbar" aria-label="Trophies earned">
+      <div aria-label="Trophies earned" class="bar" role="progressbar">
         <div class="bar-fill" id="barfill"></div>
       </div>
       <p class="stats" id="stats"></p>
@@ -33,7 +33,7 @@
   </header>
 
   <main>
-    <nav class="tabs" aria-label="Views">
+    <nav aria-label="Views" class="tabs">
       <button class="tab active" id="tab-checklist" type="button">Checklist</button>
       <button class="tab" id="tab-roadmap" type="button">Roadmap to Platinum</button>
     </nav>
@@ -41,7 +41,7 @@
     <section id="view-checklist">
       <div class="controls">
         <label class="search">Search
-          <input type="search" id="search" placeholder="trophy name or guide word…" autocomplete="off">
+          <input autocomplete="off" id="search" placeholder="trophy name or guide word…" type="search">
         </label>
         <label>Grade
           <select id="grade">
@@ -53,29 +53,29 @@
           </select>
         </label>
         <label class="check">
-          <input type="checkbox" id="spoiler"> Hide story spoilers
+          <input id="spoiler" type="checkbox"> Hide story spoilers
         </label>
         <label class="check">
-          <input type="checkbox" id="earnedonly"> Earned only
+          <input id="earnedonly" type="checkbox"> Earned only
         </label>
-        <button type="button" id="export">Export progress</button>
+        <button id="export" type="button">Export progress</button>
         <label class="import">Import progress
-          <input type="file" id="import" accept="application/json,.json">
+          <input accept="application/json,.json" id="import" type="file">
         </label>
-        <button type="button" class="danger" id="reset">Reset</button>
+        <button class="danger" id="reset" type="button">Reset</button>
       </div>
-      <div class="chips" id="kinds" role="group" aria-label="Filter by kind">
-        <button type="button" class="chip active" data-kind="all">All 55</button>
-        <button type="button" class="chip" data-kind="story">Story</button>
-        <button type="button" class="chip" data-kind="missable">Missable</button>
-        <button type="button" class="chip" data-kind="collectibles">Collectibles</button>
-        <button type="button" class="chip" data-kind="activities">Activities</button>
+      <div aria-label="Filter by kind" class="chips" id="kinds" role="group">
+        <button class="chip active" data-kind="all" type="button">All 55</button>
+        <button class="chip" data-kind="story" type="button">Story</button>
+        <button class="chip" data-kind="missable" type="button">Missable</button>
+        <button class="chip" data-kind="collectibles" type="button">Collectibles</button>
+        <button class="chip" data-kind="activities" type="button">Activities</button>
       </div>
       <p class="count" id="count"></p>
       <div class="list" id="list"></div>
     </section>
 
-    <section id="view-roadmap" hidden>
+    <section hidden id="view-roadmap">
       <p class="roadmap-intro">Play in this order. Stage 1 first — it holds the game's only confirmed missable. Story trophies cannot be missed; everything else stays available after the credits.</p>
       <div id="roadmap"></div>
     </section>
@@ -115,6 +115,6 @@
       </ul>
     </footer>
   </main>
-  <script type="module" src="app.js"></script>
+  <script src="app.js" type="module"></script>
 </body>
 </html>
