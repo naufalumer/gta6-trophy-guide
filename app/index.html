@@ -3,23 +3,73 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA VI trophy checklist</title>
+<title>Leonida Legend — GTA 6 Trophy Guide &amp; Tracker</title>
+<meta name="description" content="All 55 Grand Theft Auto VI trophies: official names, descriptions and grades, original guides with named sources, a roadmap to the platinum, and a saved checklist. Works offline.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>GTA VI trophy checklist</h1>
-  <p id="progress">0 of 55 earned</p>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">Grand Theft Auto VI &middot; PlayStation 5</p>
+    <h1>Leonida Legend</h1>
+    <p class="sub">Every trophy, in your own words, with a source beside each guide — plus a roadmap to the platinum. No sign-in, no network: progress lives in your browser.</p>
+    <div class="totals" id="totals">Loading 55 trophies…</div>
+    <div class="bar" role="progressbar" aria-label="Trophies earned"><div class="bar-fill" id="barfill"></div></div>
+    <p class="stats" id="stats"></p>
+  </div>
 </header>
-<div class="controls">
-  <label>Grade <select id="grade"><option value="all">All</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
-  <button id="export" type="button">Export progress</button>
-  <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
-</div>
-<table>
-  <thead><tr><th>Earned</th><th>Trophy</th><th>Grade</th><th>How to get it</th></tr></thead>
-  <tbody id="rows"></tbody>
-</table>
+
+<main>
+  <nav class="tabs" aria-label="Views">
+    <button id="tab-checklist" class="tab active" type="button">Checklist</button>
+    <button id="tab-roadmap" class="tab" type="button">Roadmap to Platinum</button>
+  </nav>
+
+  <section id="view-checklist">
+    <div class="controls">
+      <label class="search">Search <input id="search" type="search" placeholder="trophy name or guide word…" autocomplete="off"></label>
+      <label>Grade
+        <select id="grade">
+          <option value="all">All grades</option>
+          <option value="platinum">Platinum</option>
+          <option value="gold">Gold</option>
+          <option value="silver">Silver</option>
+          <option value="bronze">Bronze</option>
+        </select>
+      </label>
+      <label class="check"><input id="spoiler" type="checkbox"> Hide story spoilers</label>
+      <label class="check"><input id="earnedonly" type="checkbox"> Earned only</label>
+      <button id="export" type="button">Export progress</button>
+      <label class="import">Import progress <input id="import" type="file" accept="application/json,.json"></label>
+      <button id="reset" type="button" class="danger">Reset</button>
+    </div>
+    <div class="chips" id="kinds" role="group" aria-label="Filter by kind">
+      <button type="button" data-kind="all" class="chip active">All 55</button>
+      <button type="button" data-kind="story" class="chip">Story</button>
+      <button type="button" data-kind="missable" class="chip">Missable</button>
+      <button type="button" data-kind="collectibles" class="chip">Collectibles</button>
+      <button type="button" data-kind="activities" class="chip">Activities</button>
+    </div>
+    <p class="count" id="count"></p>
+    <div id="list" class="list"></div>
+  </section>
+
+  <section id="view-roadmap" hidden>
+    <p class="roadmap-intro">Play in this order. Stage 1 first — it holds the game's only confirmed missable. Story trophies cannot be missed; everything else stays available after the credits.</p>
+    <div id="roadmap"></div>
+  </section>
+
+  <footer>
+    <h2>Sources &amp; honesty notes</h2>
+    <ul>
+      <li>Trophy names, descriptions and grades are shown exactly as PlayStation publishes them (via <a href="https://www.exophase.com/game/grand-theft-auto-vi-psn/trophies/">Exophase</a>). Every guide is written in our own words — a source is cited, never copied.</li>
+      <li>Guide sources: <a href="https://www.exophase.com/game/grand-theft-auto-vi-psn/trophies/">Exophase</a> (official names, descriptions, grades), <a href="https://psnprofiles.com/trophies/43531-grand-theft-auto-vi">PSNProfiles</a> (grades and progress targets), <a href="https://outputlag.com/guides/gta-6-trophy-list/">OutputLag</a> (specific steps and counts), <a href="https://www.planetgta6.com/en/gta-6-trophies/">PlanetGTA6</a> (cross-check).</li>
+      <li>Counts marked “unconfirmed” (meditation spots, card sets, WAiNK locations, Leonida areas) come from launch-week lists and have not been independently re-verified — treat them as working targets, not facts.</li>
+      <li>Estimates: ~200 hours to the platinum (launch-week guides). No online trophies, no difficulty trophies; cheats disable trophies and saving. The game launched 18–19 Nov 2026; this guide is built from the official descriptions plus launch-week guides.</li>
+      <li>An original fan guide. Not affiliated with Rockstar Games or PlayStation; no Rockstar logo, artwork, box art or screenshots of the game are used.</li>
+    </ul>
+  </footer>
+</main>
 <script type="module" src="app.js"></script>
 </body>
 </html>
