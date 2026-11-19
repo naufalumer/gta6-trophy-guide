@@ -1,8 +1,8 @@
 /* Leonida Legend — a GTA VI cover-art look built from original art only.
-   Vice City sunset: hot pink, orange and purple over black-purple, with
-   neon teal accents. No Rockstar logo, official art, box art or game
-   screenshots anywhere: the panels are AI-made originals in a GTA style,
-   and the display type is Pricedown. */
+   A Vice City sunset over black-purple: hot pink, orange and gold, with
+   neon teal for earned states. No Rockstar logo, official art, box art or
+   game screenshots anywhere: the panels are AI-made originals in a GTA
+   style, and the display type is Pricedown. */
 @font-face {
   font-family: "Pricedown";
   font-style: normal;
@@ -12,43 +12,56 @@
 }
 
 :root {
-  --night: #0d0518;
-  --night2: #1a0b2e;
-  --panel: #221040;
-  --panel2: #1a0b2e;
-  --edge: #5b2a86;
-  --text: #fff5f0;
-  --dim: #d8b4e2;
-  --hot: #ff2e88;
-  --ember: #ff7a18;
-  --amber: #ffd23f;
-  --violet: #a855f7;
-  --aqua: #2ec4b6;
-  --frost: #7fe3f0;
-  --steel: #c9d4d8;
-  --copper: #e08a4e;
+  --bg0: #0d0518;
+  --bg1: #1a0b2e;
+  --card0: #221040;
+  --card1: #1a0b2e;
+  --line: #5b2a86;
+  --ink: #fff5f0;
+  --soft: #d8b4e2;
+  --pale: #f3e4f7;
+  --pink: #ff2e88;
+  --flame: #ff7a18;
+  --gold: #ffd23f;
+  --grape: #a855f7;
+  --teal: #2ec4b6;
+  --ice: #7fe3f0;
+  --silver: #c9d4d8;
+  --rust: #e08a4e;
+  --alarm: #e63946;
+  --danger: #ff9a8a;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
-  background: var(--night);
-  color: var(--text);
+  background: var(--bg0);
+  color: var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   line-height: 1.5;
   margin: 0;
 }
 
-a { color: var(--frost); }
+a {
+  color: var(--ice);
+}
+
+main {
+  margin: 0 auto;
+  max-width: 1020px;
+  padding: 18px 20px 40px;
+}
 
 /* Hero: a band of nine cover-art panels, GTA-cover energy. */
 .hero {
-  background: #000;
-  border-bottom: 4px solid var(--hot);
+  background: black;
+  border-bottom: 4px solid var(--pink);
 }
 
 .cover-grid {
-  background: #000;
+  background: black;
   display: grid;
   gap: 3px;
   grid-template-columns: repeat(3, 1fr);
@@ -66,16 +79,16 @@ a { color: var(--frost); }
 
 .hero-inner {
   background:
-    radial-gradient(600px 120px at 15% 0%, rgba(255, 46, 136, .28), transparent 70%),
-    radial-gradient(600px 120px at 85% 0%, rgba(255, 122, 24, .25), transparent 70%),
-    var(--night);
+    radial-gradient(600px 120px at 15% 0%, rgb(255 46 136 / .28), transparent 70%),
+    radial-gradient(600px 120px at 85% 0%, rgb(255 122 24 / .25), transparent 70%),
+    var(--bg0);
   margin: 0 auto;
   max-width: 1020px;
   padding: 20px 20px 24px;
 }
 
 .kicker {
-  color: var(--amber);
+  color: var(--gold);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: .18em;
@@ -84,7 +97,7 @@ a { color: var(--frost); }
 }
 
 h1 {
-  background: linear-gradient(90deg, #ff2e88 0%, #ff7a18 45%, #ffd23f 80%);
+  background: linear-gradient(90deg, var(--pink) 0%, var(--flame) 45%, var(--gold) 80%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -98,22 +111,22 @@ h1 {
 }
 
 .sub {
-  color: #f3e4f7;
+  color: var(--pale);
   font-size: 16px;
   margin: 10px 0 16px;
   max-width: 680px;
 }
 
 .totals {
-  color: #fff;
+  color: white;
   font-family: "Pricedown", "Arial Black", sans-serif;
   font-size: 30px;
   letter-spacing: .03em;
 }
 
 .bar {
-  background: #1a0b2e;
-  border: 2px solid var(--edge);
+  background: var(--bg1);
+  border: 2px solid var(--line);
   border-radius: 999px;
   height: 16px;
   margin-top: 8px;
@@ -122,7 +135,7 @@ h1 {
 }
 
 .bar-fill {
-  background: linear-gradient(90deg, var(--hot), var(--ember), var(--amber));
+  background: linear-gradient(90deg, var(--pink), var(--flame), var(--gold));
   box-shadow: 0 0 12px rgba(255, 46, 136, .8);
   height: 100%;
   transition: width .3s;
@@ -130,18 +143,14 @@ h1 {
 }
 
 .stats {
-  color: var(--dim);
+  color: var(--soft);
   font-size: 14px;
   font-weight: 700;
   margin: 10px 0 0;
 }
 
-.stats b { color: var(--amber); }
-
-main {
-  margin: 0 auto;
-  max-width: 1020px;
-  padding: 18px 20px 40px;
+.stats b {
+  color: var(--gold);
 }
 
 /* Tabs */
@@ -152,10 +161,10 @@ main {
 }
 
 .tab {
-  background: var(--night2);
-  border: 2px solid var(--edge);
+  background: var(--bg1);
+  border: 2px solid var(--line);
   border-radius: 10px;
-  color: var(--text);
+  color: var(--ink);
   cursor: pointer;
   font-family: "Pricedown", "Arial Black", sans-serif;
   font-size: 22px;
@@ -164,10 +173,10 @@ main {
 }
 
 .tab.active {
-  background: linear-gradient(90deg, var(--hot), var(--ember));
-  border-color: var(--hot);
+  background: linear-gradient(90deg, var(--pink), var(--flame));
+  border-color: var(--pink);
   box-shadow: 0 0 16px rgba(255, 46, 136, .55);
-  color: #fff;
+  color: white;
 }
 
 /* Controls: search, grade, toggles, export / import / reset. */
@@ -182,28 +191,30 @@ main {
 
 .controls input[type="search"],
 .controls select {
-  background: var(--panel);
-  border: 2px solid var(--edge);
+  background: var(--card0);
+  border: 2px solid var(--line);
   border-radius: 8px;
-  color: var(--text);
+  color: var(--ink);
   font-size: 14px;
   padding: 8px 10px;
 }
 
-.controls input[type="search"] { width: 250px; }
+.controls input[type="search"] {
+  width: 250px;
+}
 
 .controls input[type="search"]:focus,
 .controls select:focus {
-  border-color: var(--hot);
+  border-color: var(--pink);
   outline: none;
 }
 
 .controls button,
 .import {
-  background: var(--panel);
-  border: 2px solid var(--edge);
+  background: var(--card0);
+  border: 2px solid var(--line);
   border-radius: 8px;
-  color: var(--text);
+  color: var(--ink);
   cursor: pointer;
   font-size: 14px;
   font-weight: 700;
@@ -211,11 +222,17 @@ main {
 }
 
 .controls button:hover,
-.import:hover { border-color: var(--hot); }
+.import:hover {
+  border-color: var(--pink);
+}
 
-.controls button.danger { color: #ff9a8a; }
+.controls button.danger {
+  color: var(--danger);
+}
 
-.import input { display: none; }
+.import input {
+  display: none;
+}
 
 .check {
   align-items: center;
@@ -233,10 +250,10 @@ main {
 }
 
 .chip {
-  background: var(--night2);
-  border: 2px solid var(--edge);
+  background: var(--bg1);
+  border: 2px solid var(--line);
   border-radius: 999px;
-  color: var(--text);
+  color: var(--ink);
   cursor: pointer;
   font-size: 14px;
   font-weight: 700;
@@ -244,14 +261,14 @@ main {
 }
 
 .chip.active {
-  background: var(--aqua);
-  border-color: var(--aqua);
+  background: var(--teal);
+  border-color: var(--teal);
   box-shadow: 0 0 12px rgba(46, 196, 182, .5);
   color: #06231f;
 }
 
 .count {
-  color: var(--dim);
+  color: var(--soft);
   font-size: 13px;
   margin: 4px 0 12px;
 }
@@ -263,16 +280,16 @@ main {
 }
 
 .card {
-  background: linear-gradient(135deg, var(--panel) 0%, var(--panel2) 100%);
-  border: 2px solid var(--edge);
-  border-left: 6px solid var(--violet);
+  background: linear-gradient(135deg, var(--card0) 0%, var(--card1) 100%);
+  border: 2px solid var(--line);
+  border-left: 6px solid var(--grape);
   border-radius: 12px;
   padding: 14px 16px;
 }
 
 .card.earned {
-  border-color: var(--aqua);
-  border-left-color: var(--aqua);
+  border-color: var(--teal);
+  border-left-color: var(--teal);
 }
 
 .card-head {
@@ -283,14 +300,14 @@ main {
 }
 
 .card-head input[type="checkbox"] {
-  accent-color: var(--hot);
+  accent-color: var(--pink);
   cursor: pointer;
   height: 22px;
   width: 22px;
 }
 
 .card-head h3 {
-  color: #fff;
+  color: white;
   flex: 1 1 auto;
   font-size: 18px;
   margin: 0;
@@ -299,7 +316,7 @@ main {
 
 .card.earned .card-head h3 {
   text-decoration: line-through;
-  text-decoration-color: var(--aqua);
+  text-decoration-color: var(--teal);
 }
 
 .grade,
@@ -314,64 +331,90 @@ main {
   white-space: nowrap;
 }
 
-.grade-platinum { background: var(--frost); color: #083038; }
-.grade-gold { background: var(--amber); color: #3a2a05; }
-.grade-silver { background: var(--steel); color: #22303a; }
-.grade-bronze { background: var(--copper); color: #2e1a08; }
+.grade-platinum {
+  background: var(--ice);
+  color: #083038;
+}
+
+.grade-gold {
+  background: var(--gold);
+  color: #3a2a05;
+}
+
+.grade-silver {
+  background: var(--silver);
+  color: #22303a;
+}
+
+.grade-bronze {
+  background: var(--rust);
+  color: #2e1a08;
+}
 
 .kind {
-  background: var(--night2);
-  border: 1px solid var(--edge);
-  color: var(--dim);
+  background: var(--bg1);
+  border: 1px solid var(--line);
+  color: var(--soft);
 }
 
 .badge.missable {
-  background: #e63946;
+  background: var(--alarm);
   box-shadow: 0 0 10px rgba(230, 57, 70, .6);
-  color: #fff;
+  color: white;
 }
 
-.badge.atrisk { background: var(--ember); color: #2e1a08; }
+.badge.atrisk {
+  background: var(--flame);
+  color: #2e1a08;
+}
 
 .badge.unconf {
   background: transparent;
-  border: 1px dashed var(--amber);
-  color: var(--amber);
+  border: 1px dashed var(--gold);
+  color: var(--gold);
 }
 
 .desc {
-  color: var(--dim);
+  color: var(--soft);
   font-style: italic;
   margin: 8px 0 6px;
 }
 
-.guide { margin: 6px 0; }
+.guide {
+  margin: 6px 0;
+}
 
 .steps {
   margin: 6px 0 4px 20px;
   padding: 0;
 }
 
-.steps li { margin: 3px 0; }
+.steps li {
+  margin: 3px 0;
+}
 
 .sources {
-  color: var(--dim);
+  color: var(--soft);
   font-size: 13px;
   margin: 8px 0 0;
 }
 
-.hidden-note { color: var(--amber); }
+.hidden-note {
+  color: var(--gold);
+}
 
 /* Roadmap tab */
 .roadmap-intro {
-  color: #f3e4f7;
+  color: var(--pale);
   font-size: 16px;
 }
 
-.stage { margin-bottom: 24px; }
+.stage {
+  margin-bottom: 24px;
+}
 
 .stage > h3 {
-  color: var(--amber);
+  color: var(--gold);
   font-family: "Pricedown", "Arial Black", sans-serif;
   font-size: 34px;
   font-weight: 400;
@@ -380,12 +423,12 @@ main {
 }
 
 .stage-text {
-  color: #f3e4f7;
+  color: var(--pale);
   margin: 0 0 4px;
 }
 
 .stage-meta {
-  color: var(--hot);
+  color: var(--pink);
   font-size: 13px;
   font-weight: 700;
   margin: 0 0 10px;
@@ -393,15 +436,15 @@ main {
 
 /* Footer: sources and honesty notes. */
 footer {
-  border-top: 2px solid var(--edge);
-  color: var(--dim);
+  border-top: 2px solid var(--line);
+  color: var(--soft);
   font-size: 14px;
   margin-top: 32px;
   padding-top: 16px;
 }
 
 footer h2 {
-  color: var(--text);
+  color: var(--ink);
   font-family: "Pricedown", "Arial Black", sans-serif;
   font-size: 26px;
   font-weight: 400;
@@ -409,10 +452,20 @@ footer h2 {
   margin: 0 0 8px;
 }
 
-footer li { margin: 6px 0; }
+footer li {
+  margin: 6px 0;
+}
 
 @media (max-width: 640px) {
-  h1 { font-size: 52px; }
-  .cover-grid { height: 220px; }
-  .controls input[type="search"] { width: 100%; }
+  h1 {
+    font-size: 52px;
+  }
+
+  .cover-grid {
+    height: 220px;
+  }
+
+  .controls input[type="search"] {
+    width: 100%;
+  }
 }
