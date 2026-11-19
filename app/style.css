@@ -1,7 +1,106 @@
-body { font-family: Arial, sans-serif; margin: 24px; color: #222; }
-header { display: flex; justify-content: space-between; align-items: baseline; }
-.controls { display: flex; gap: 16px; margin: 12px 0; align-items: center; }
-.import input { font-size: 12px; }
-table { border-collapse: collapse; width: 100%; }
-th, td { border-bottom: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; white-space: pre-line; }
-th { background: #f2f2f2; }
+/* Leonida Legend — an original look: deep Vice nights, sunset coral, palm teal.
+   No Rockstar logo, artwork, box art or game screenshots anywhere. */
+:root {
+  --ink: #eef2f0;
+  --muted: #a8b8b4;
+  --bg: #0d1b22;
+  --bg2: #12262e;
+  --card: #162e38;
+  --line: #2a4753;
+  --accent: #ff7a59;
+  --accent2: #2ec4b6;
+  --gold: #f4c95d;
+  --silver: #c9d4d8;
+  --bronze: #d08a4e;
+  --plat: #7fe3f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+a { color: var(--plat); }
+.hero {
+  background: linear-gradient(135deg, #1b3a4b 0%, #14424a 45%, #7a3b4f 100%);
+  border-bottom: 3px solid var(--accent);
+  padding: 28px 20px 22px;
+}
+.hero-inner { max-width: 1020px; margin: 0 auto; }
+.kicker { margin: 0 0 4px; letter-spacing: .14em; text-transform: uppercase; font-size: 12px; color: var(--gold); }
+h1 { margin: 0; font-size: 40px; line-height: 1.1; letter-spacing: -.01em; }
+.sub { margin: 8px 0 16px; max-width: 640px; color: #d7e4e0; }
+.totals { font-size: 18px; font-weight: 700; }
+.bar { height: 10px; background: #0a1418; border-radius: 6px; margin-top: 8px; overflow: hidden; max-width: 640px; }
+.bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent2), var(--gold)); transition: width .3s; }
+.stats { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+main { max-width: 1020px; margin: 0 auto; padding: 16px 20px 40px; }
+.tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+.tab {
+  background: var(--bg2); color: var(--ink); border: 1px solid var(--line);
+  padding: 9px 18px; border-radius: 8px; font-size: 15px; cursor: pointer;
+}
+.tab.active { background: var(--accent); border-color: var(--accent); color: #1a0e08; font-weight: 700; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-bottom: 12px; font-size: 14px; }
+.controls input[type="search"], .controls select {
+  background: var(--card); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 6px; padding: 7px 9px; font-size: 14px;
+}
+.controls input[type="search"] { width: 240px; }
+.controls button, .import {
+  background: var(--card); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 6px; padding: 7px 12px; font-size: 14px; cursor: pointer;
+}
+.controls button:hover, .import:hover { border-color: var(--accent2); }
+.controls button.danger { color: #ff9a8a; }
+.import input { display: none; }
+.check { display: flex; gap: 6px; align-items: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.chip {
+  background: var(--bg2); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 999px; padding: 6px 14px; font-size: 14px; cursor: pointer;
+}
+.chip.active { background: var(--accent2); border-color: var(--accent2); color: #06231f; font-weight: 700; }
+.count { color: var(--muted); font-size: 13px; margin: 4px 0 12px; }
+.list { display: grid; gap: 12px; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 14px 16px;
+}
+.card.earned { border-color: var(--accent2); }
+.card-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.card-head input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent2); cursor: pointer; }
+.card-head h3 { margin: 0; font-size: 17px; flex: 1 1 auto; min-width: 200px; }
+.card.earned .card-head h3 { text-decoration: line-through; text-decoration-color: var(--accent2); }
+.grade, .kind, .badge {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 999px; white-space: nowrap;
+}
+.grade-platinum { background: var(--plat); color: #083038; }
+.grade-gold { background: var(--gold); color: #3a2a05; }
+.grade-silver { background: var(--silver); color: #22303a; }
+.grade-bronze { background: var(--bronze); color: #2e1a08; }
+.kind { background: var(--bg2); color: var(--muted); border: 1px solid var(--line); }
+.badge.missable { background: #e63946; color: #fff; }
+.badge.atrisk { background: #f4a259; color: #2e1a08; }
+.badge.unconf { background: transparent; color: var(--gold); border: 1px dashed var(--gold); }
+.desc { margin: 8px 0 6px; color: var(--muted); font-style: italic; }
+.guide { margin: 6px 0; }
+.steps { margin: 6px 0 4px 20px; padding: 0; }
+.steps li { margin: 3px 0; }
+.sources { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+.hidden-note { color: var(--gold); }
+.roadmap-intro { color: #d7e4e0; }
+.stage { margin-bottom: 22px; }
+.stage > h3 { font-size: 20px; margin: 0 0 4px; color: var(--gold); }
+.stage-text { margin: 0 0 4px; color: #d7e4e0; }
+.stage-meta { margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+footer { margin-top: 32px; border-top: 1px solid var(--line); padding-top: 16px; font-size: 14px; color: var(--muted); }
+footer h2 { font-size: 16px; color: var(--ink); margin: 0 0 8px; }
+footer li { margin: 6px 0; }
+@media (max-width: 640px) {
+  h1 { font-size: 30px; }
+  .controls input[type="search"] { width: 100%; }
+}
