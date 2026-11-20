@@ -1,46 +1,40 @@
-// Tiny static server for the Leonida Legend guide. Stdlib only, loopback only.
-// Usage: node serve.ts [port]   (default 8080, serves app/ at its root)
+// Leonida Legend dev server: serves app/ at http://127.0.0.1:8080.
+// Standard library only, loopback only, no network use at all.
+import { createServer } from 'node:http';
+import { readFileSync, existsSync, statSync } from 'node:fs';
+import { join, extname, normalize } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { createServer } from "node:http";
-import { readFile } from "node:fs/promises";
-import { extname, join, normalize, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const ROOT = resolve(join(fileURLToPath(new URL(".", import.meta.url)), "app"));
-const PORT = Number(process.argv[2] || 8080);
-
-const TYPES: Record<string, string> = {
-  ".html": "text/html; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".js": "text/javascript; charset=utf-8",
-  ".mjs": "text/javascript; charset=utf-8",
-  ".json": "application/json; charset=utf-8",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".png": "image/png",
-  ".otf": "font/otf",
+const here = fileURLToPath(new URL('.', import.meta.url));
+const root = join(here, 'app');
+const port = Number(process.env.PORT ?? 8080);
+const types = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.jpg': 'image/jpeg',
+  '.otf': 'font/otf',
 };
 
-const server = createServer(async (req, res) => {
+const server = createServer((req, res) => {
   try {
-    const url = new URL(req.url || "/", "http://127.0.0.1");
-    let path = decodeURIComponent(url.pathname);
-    if (path === "/") path = "/index.html";
-    const file = resolve(join(ROOT, normalize(path)));
-    if (!file.startsWith(ROOT)) {
-      res.writeHead(403);
-      res.end("forbidden");
+    const raw = new URL(req.url ?? '/', 'http://127.0.0.1').pathname;
+    const path = normalize(decodeURIComponent(raw));
+    const file = join(root, path === '/' ? 'index.html' : path);
+    if (!file.startsWith(root) || !existsSync(file) || !statSync(file).isFile()) {
+      res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' });
+      res.end('not found');
       return;
     }
-    const body = await readFile(file);
-    res.writeHead(200, { "content-type": TYPES[extname(file)] || "application/octet-stream" });
-    res.end(body);
-  } catch {
-    res.writeHead(404);
-    res.end("not found");
+    res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream' });
+    res.end(readFileSync(file));
+  } catch (e) {
+    res.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' });
+    res.end('bad request');
   }
 });
 
-server.listen(PORT, "127.0.0.1", () => {
-  console.log(`Leonida Legend serving app/ at http://127.0.0.1:${PORT}`);
+server.listen(port, '127.0.0.1', () => {
+  console.log(`Leonida Legend dev server: http://127.0.0.1:${port}/`);
 });
