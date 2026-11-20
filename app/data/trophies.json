@@ -6,6 +6,8 @@
         {
             "id": 1,
             "name": "Vice Got a Price!",
+            "est_minutes": 0,
+            "difficulty": 1,
             "grade": "platinum",
             "hidden": false,
             "kind": "story",
@@ -32,6 +34,8 @@
         {
             "id": 2,
             "name": "Just Like Paradise",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -56,6 +60,8 @@
         {
             "id": 3,
             "name": "Paradise Lost",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -81,6 +87,8 @@
         {
             "id": 4,
             "name": "T**s Ass Drug Money",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -105,6 +113,8 @@
         {
             "id": 5,
             "name": "Vice City, Baby!",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -130,6 +140,8 @@
         {
             "id": 6,
             "name": "Top Of The World, Ma",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -154,6 +166,8 @@
         {
             "id": 7,
             "name": "You Gotta Know When to Get Off",
+            "est_minutes": 45,
+            "difficulty": 2,
             "grade": "gold",
             "hidden": true,
             "kind": "story",
@@ -178,6 +192,8 @@
         {
             "id": 8,
             "name": "Trust",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -202,6 +218,8 @@
         {
             "id": 9,
             "name": "Break the Bank",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -226,6 +244,8 @@
         {
             "id": 10,
             "name": "Family Matters",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -250,6 +270,8 @@
         {
             "id": 11,
             "name": "DWNFALL",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -274,6 +296,8 @@
         {
             "id": 12,
             "name": "Hi-Jacked",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -298,6 +322,8 @@
         {
             "id": 13,
             "name": "Snow Storm",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -322,6 +348,8 @@
         {
             "id": 14,
             "name": "A Long Road",
+            "est_minutes": 120,
+            "difficulty": 4,
             "grade": "gold",
             "hidden": false,
             "kind": "activities",
@@ -348,6 +376,8 @@
         {
             "id": 15,
             "name": "Cunning Stunts",
+            "est_minutes": 180,
+            "difficulty": 2,
             "grade": "silver",
             "hidden": false,
             "kind": "activities",
@@ -374,6 +404,8 @@
         {
             "id": 16,
             "name": "Master of None",
+            "est_minutes": 60,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -399,6 +431,8 @@
         {
             "id": 17,
             "name": "The Shootist",
+            "est_minutes": 240,
+            "difficulty": 4,
             "grade": "silver",
             "hidden": false,
             "kind": "activities",
@@ -425,6 +459,8 @@
         {
             "id": 18,
             "name": "Top Fun",
+            "est_minutes": 30,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -450,6 +486,8 @@
         {
             "id": 19,
             "name": "Earn Cash, Not Kudos",
+            "est_minutes": 60,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -476,6 +514,8 @@
         {
             "id": 20,
             "name": "Baited My Tackle",
+            "est_minutes": 45,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -501,6 +541,8 @@
         {
             "id": 21,
             "name": "Stick Fiddler",
+            "est_minutes": 30,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -526,6 +568,8 @@
         {
             "id": 22,
             "name": "Road to Rehabilitation",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -551,6 +595,8 @@
         {
             "id": 23,
             "name": "This Was No Boat Accident",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -576,6 +622,8 @@
         {
             "id": 24,
             "name": "The Lone Rider",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -601,6 +649,8 @@
         {
             "id": 25,
             "name": "Strangers & Freaks",
+            "est_minutes": 360,
+            "difficulty": 3,
             "grade": "silver",
             "hidden": true,
             "kind": "story",
@@ -628,6 +678,8 @@
         {
             "id": 26,
             "name": "Supply & Demand",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -653,6 +705,8 @@
         {
             "id": 27,
             "name": "Spin On This!",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -678,6 +732,8 @@
         {
             "id": 28,
             "name": "Positive Mental Attitude",
+            "est_minutes": 15,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": false,
             "kind": "missable",
@@ -705,6 +761,8 @@
         {
             "id": 29,
             "name": "Fair Game",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "story",
@@ -730,6 +788,8 @@
         {
             "id": 30,
             "name": "Don't Touch My Deck",
+            "est_minutes": 300,
+            "difficulty": 3,
             "grade": "silver",
             "hidden": false,
             "kind": "collectibles",
@@ -757,6 +817,8 @@
         {
             "id": 31,
             "name": "You WAiNKer!",
+            "est_minutes": 420,
+            "difficulty": 5,
             "grade": "silver",
             "hidden": false,
             "kind": "collectibles",
@@ -783,6 +845,8 @@
         {
             "id": 32,
             "name": "One Last Thing",
+            "est_minutes": 45,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -808,6 +872,8 @@
         {
             "id": 33,
             "name": "Hot Together",
+            "est_minutes": 30,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -834,6 +900,8 @@
         {
             "id": 34,
             "name": "Retail Therapy",
+            "est_minutes": 20,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -860,6 +928,8 @@
         {
             "id": 35,
             "name": "Whip It Good",
+            "est_minutes": 120,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "collectibles",
@@ -886,6 +956,8 @@
         {
             "id": 36,
             "name": "Gunslinger",
+            "est_minutes": 60,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -911,6 +983,8 @@
         {
             "id": 37,
             "name": "Catch Me If You Can",
+            "est_minutes": 90,
+            "difficulty": 3,
             "grade": "bronze",
             "hidden": true,
             "kind": "activities",
@@ -936,6 +1010,8 @@
         {
             "id": 38,
             "name": "Challenging Tank",
+            "est_minutes": 60,
+            "difficulty": 3,
             "grade": "bronze",
             "hidden": true,
             "kind": "activities",
@@ -961,6 +1037,8 @@
         {
             "id": 39,
             "name": "Sneakthief",
+            "est_minutes": 60,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -987,6 +1065,8 @@
         {
             "id": 40,
             "name": "Maximum Withdrawal",
+            "est_minutes": 300,
+            "difficulty": 3,
             "grade": "silver",
             "hidden": false,
             "kind": "activities",
@@ -1012,6 +1092,8 @@
         {
             "id": 41,
             "name": "A Classic Blitz Play",
+            "est_minutes": 60,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -1037,6 +1119,8 @@
         {
             "id": 42,
             "name": "The Goodtime State",
+            "est_minutes": 300,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "collectibles",
@@ -1063,6 +1147,8 @@
         {
             "id": 43,
             "name": "Pest Control",
+            "est_minutes": 45,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -1088,6 +1174,8 @@
         {
             "id": 44,
             "name": "In The Beginning…",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "activities",
@@ -1113,6 +1201,8 @@
         {
             "id": 45,
             "name": "Capital Offense",
+            "est_minutes": 60,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": true,
             "kind": "activities",
@@ -1138,6 +1228,8 @@
         {
             "id": 46,
             "name": "Let’s Go Bowling",
+            "est_minutes": 30,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": true,
             "kind": "activities",
@@ -1163,6 +1255,8 @@
         {
             "id": 47,
             "name": "Personal Best",
+            "est_minutes": 45,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": true,
             "kind": "activities",
@@ -1188,6 +1282,8 @@
         {
             "id": 48,
             "name": "Actions Speak Louder",
+            "est_minutes": 45,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -1213,6 +1309,8 @@
         {
             "id": 49,
             "name": "Bad Luck, I Guess",
+            "est_minutes": 30,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": true,
             "kind": "activities",
@@ -1238,6 +1336,8 @@
         {
             "id": 50,
             "name": "The Truth Is Out There",
+            "est_minutes": 60,
+            "difficulty": 3,
             "grade": "bronze",
             "hidden": true,
             "kind": "activities",
@@ -1263,6 +1363,8 @@
         {
             "id": 51,
             "name": "Ten Pin",
+            "est_minutes": 20,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": true,
             "kind": "activities",
@@ -1288,6 +1390,8 @@
         {
             "id": 52,
             "name": "Dime on the Dollar",
+            "est_minutes": 45,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -1313,6 +1417,8 @@
         {
             "id": 53,
             "name": "Treat Yo Self",
+            "est_minutes": 30,
+            "difficulty": 1,
             "grade": "bronze",
             "hidden": false,
             "kind": "activities",
@@ -1338,6 +1444,8 @@
         {
             "id": 54,
             "name": "Little Boxes",
+            "est_minutes": 90,
+            "difficulty": 2,
             "grade": "bronze",
             "hidden": false,
             "kind": "collectibles",
@@ -1364,6 +1472,8 @@
         {
             "id": 55,
             "name": "On the Spot",
+            "est_minutes": 120,
+            "difficulty": 3,
             "grade": "bronze",
             "hidden": false,
             "kind": "collectibles",
