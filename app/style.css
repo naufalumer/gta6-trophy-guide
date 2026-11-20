@@ -1,497 +1,289 @@
-/* Leonida Legend — a GTA VI cover-art look built from original art only.
-   A Vice City sunset over black-purple: hot pink, orange and gold, with
-   neon teal for earned states. No Rockstar logo, official art, box art or
-   game screenshots anywhere: the panels are AI-made originals in a GTA
-   style, and the display type is Pricedown. */
 @font-face {
   font-family: "Pricedown";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
   src: url("fonts/Pricedown.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
-  --bg0: #0d0518;
-  --bg1: #1a0b2e;
-  --card0: #221040;
-  --card1: #1a0b2e;
-  --line: #5b2a86;
-  --ink: #fff5f0;
-  --soft: #d8b4e2;
-  --pale: #f3e4f7;
-  --pink: #ff2e88;
-  --flame: #ff7a18;
-  --gold: #ffd23f;
-  --grape: #a855f7;
-  --teal: #2ec4b6;
-  --ice: #7fe3f0;
-  --silver: #c9d4d8;
-  --rust: #e08a4e;
-  --alarm: #e63946;
-  --danger: #ff9a8a;
+  --bg: #150826;
+  --bg2: #241040;
+  --card1: #3b1d5e;
+  --card2: #241040;
+  --ink: #f5eefc;
+  --muted: #c9b8e0;
+  --pink: #ff2d78;
+  --orange: #ff9a3d;
+  --gold: #ffd166;
+  --teal: #2ee6c8;
+  --red: #ff2d2d;
+  --line: #4d2a7a;
+  --platinum: #7ee7ff;
+  --silver: #c0c8d8;
+  --bronze: #cd7f32;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
-  background: var(--bg0);
-  color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  line-height: 1.5;
   margin: 0;
+  background: linear-gradient(180deg, #1a0b2e 0%, var(--bg) 40%, #0e0518 100%);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
-a {
-  color: var(--ice);
+h1, h2, .tab, .card-name, .stage-title {
+  font-family: "Pricedown", "Arial Black", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
 }
 
-main {
-  margin: 0 auto;
-  max-width: 1020px;
-  padding: 18px 20px 40px;
-}
-
-/* Hero: a band of nine cover-art panels, GTA-cover energy. */
+/* ---------- hero ---------- */
 .hero {
-  background: black;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 28px 28px 20px;
+  background: linear-gradient(120deg, #2b0f4d 0%, #4a1042 45%, #7a2b12 100%);
   border-bottom: 4px solid var(--pink);
 }
 
-.cover-grid {
-  background: black;
+.hero-panels {
   display: grid;
-  gap: 3px;
   grid-template-columns: repeat(3, 1fr);
-  height: 220px;
-  overflow: hidden;
+  gap: 4px;
 }
 
-.cover-grid img {
-  display: block;
-  height: 100%;
-  min-height: 0;
-  object-fit: cover;
+.hero-panels img {
   width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
 }
 
-.hero-inner {
-  background:
-    radial-gradient(600px 120px at 15% 0%, rgb(255 46 136 / .28), transparent 70%),
-    radial-gradient(600px 120px at 85% 0%, rgb(255 122 24 / .25), transparent 70%),
-    var(--bg0);
-  margin: 0 auto;
-  max-width: 1020px;
-  padding: 20px 20px 24px;
-}
-
-.kicker {
-  color: var(--gold);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .18em;
-  margin: 0 0 2px;
-  text-transform: uppercase;
-}
-
-h1 {
-  background: linear-gradient(90deg, var(--pink) 0%, var(--flame) 45%, var(--gold) 80%);
+.hero-text h1 {
+  margin: 0;
+  font-size: 64px;
+  line-height: 0.95;
+  background: linear-gradient(90deg, var(--pink), var(--orange) 55%, var(--gold));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  font-family: "Pricedown", "Arial Black", sans-serif;
-  font-size: 60px;
-  font-weight: 400;
-  letter-spacing: .02em;
-  line-height: .95;
-  margin: 0;
-  text-shadow: 0 4px 0 rgba(0, 0, 0, .35);
+  text-shadow: none;
 }
 
-.sub {
-  color: var(--pale);
-  font-size: 16px;
-  margin: 10px 0 16px;
-  max-width: 680px;
-}
+.tagline { margin: 8px 0 16px; color: var(--muted); font-size: 18px; }
 
-.totals {
-  color: white;
-  font-family: "Pricedown", "Arial Black", sans-serif;
-  font-size: 30px;
-  letter-spacing: .03em;
-}
-
-.bar {
-  background: var(--bg1);
-  border: 2px solid var(--line);
-  border-radius: 999px;
-  height: 16px;
-  margin-top: 8px;
-  max-width: 680px;
+.progress-bar {
+  height: 14px;
+  background: #0e0518;
+  border: 1px solid var(--line);
+  border-radius: 8px;
   overflow: hidden;
 }
 
-.bar-fill {
-  background: linear-gradient(90deg, var(--pink), var(--flame), var(--gold));
-  box-shadow: 0 0 12px rgba(255, 46, 136, .8);
+.progress-fill {
   height: 100%;
-  transition: width .3s;
-  width: 0;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  transition: width 0.25s ease;
 }
 
-.stats {
-  color: var(--soft);
-  font-size: 14px;
-  font-weight: 700;
-  margin: 10px 0 0;
-}
+.progress-line { margin: 8px 0 4px; font-weight: 600; }
+.grade-stats { margin: 0; color: var(--muted); font-size: 14px; }
 
-.stats b {
-  color: var(--gold);
-}
+/* ---------- layout ---------- */
+main { max-width: 1080px; margin: 0 auto; padding: 0 20px 32px; }
+footer { max-width: 1080px; margin: 0 auto; padding: 0 20px 40px; color: var(--muted); font-size: 14px; }
+footer h2 { color: var(--ink); font-size: 22px; margin-bottom: 6px; }
 
-/* Tabs */
-.tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-}
+.hidden { display: none !important; }
+
+/* ---------- tabs ---------- */
+.tabs { display: flex; gap: 8px; margin: 20px 0 16px; }
 
 .tab {
-  background: var(--bg1);
+  font-size: 22px;
+  padding: 8px 22px;
   border: 2px solid var(--line);
-  border-radius: 10px;
+  border-radius: 8px;
+  background: var(--bg2);
   color: var(--ink);
   cursor: pointer;
-  font-family: "Pricedown", "Arial Black", sans-serif;
-  font-size: 22px;
-  letter-spacing: .04em;
-  padding: 10px 22px;
 }
 
 .tab.active {
-  background: linear-gradient(90deg, var(--pink), var(--flame));
-  border-color: var(--pink);
-  box-shadow: 0 0 16px rgba(255, 46, 136, .55);
-  color: white;
+  background: linear-gradient(90deg, var(--pink), var(--orange));
+  border-color: transparent;
+  color: #fff;
 }
 
-/* Controls: search, grade, toggles, export / import / reset. */
-.controls {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  font-size: 14px;
-  gap: 10px 16px;
-  margin-bottom: 12px;
+/* ---------- toolbar ---------- */
+.toolbar {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
 }
 
-.controls input[type="search"],
-.controls select {
-  background: var(--card0);
-  border: 2px solid var(--line);
+#search {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
   border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #0e0518;
   color: var(--ink);
-  font-size: 14px;
-  padding: 8px 10px;
 }
 
-.controls input[type="search"] {
-  width: 250px;
-}
-
-.controls input[type="search"]:focus,
-.controls select:focus {
-  border-color: var(--pink);
-  outline: none;
-}
-
-.controls button,
-.import {
-  background: var(--card0);
-  border: 2px solid var(--line);
-  border-radius: 8px;
-  color: var(--ink);
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 8px 13px;
-}
-
-.controls button:hover,
-.import:hover {
-  border-color: var(--pink);
-}
-
-.controls button.danger {
-  color: var(--danger);
-}
-
-.import input {
-  display: none;
-}
-
-.check {
-  align-items: center;
-  display: flex;
-  font-weight: 700;
-  gap: 6px;
-}
-
-/* Kind filter chips */
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 8px;
-}
+.grade-filters, .kind-filters { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .chip {
-  background: var(--bg1);
-  border: 2px solid var(--line);
+  padding: 6px 12px;
   border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
   color: var(--ink);
+  font-size: 14px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 7px 16px;
 }
 
-.chip.active {
-  background: var(--teal);
-  border-color: var(--teal);
-  box-shadow: 0 0 12px rgba(46, 196, 182, .5);
-  color: #06231f;
-}
+.chip.active { background: var(--pink); border-color: var(--pink); color: #fff; }
+.chip.missable-chip.active { background: var(--red); border-color: var(--red); }
 
-.count {
-  color: var(--soft);
-  font-size: 13px;
-  margin: 4px 0 12px;
+.controls-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; font-size: 14px; }
+.controls-row select {
+  margin-left: 6px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #0e0518;
+  color: var(--ink);
 }
+.toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; }
 
-.estimate-note {
-  color: var(--soft);
-  font-size: 13px;
-  margin: 0 0 8px;
-}
+.result-count { color: var(--muted); margin: 12px 2px; }
 
-.timeleft {
-  color: var(--gold);
-  font-size: 14px;
-  font-weight: 700;
-  margin: 6px 0 0;
-}
-
-/* Trophy cards */
-.list {
-  display: grid;
-  gap: 12px;
-}
+/* ---------- cards ---------- */
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
 .card {
-  background: linear-gradient(135deg, var(--card0) 0%, var(--card1) 100%);
-  border: 2px solid var(--line);
-  border-left: 6px solid var(--grape);
-  border-radius: 12px;
+  background: linear-gradient(135deg, var(--card1), var(--card2));
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--bronze);
+  border-radius: 10px;
   padding: 14px 16px;
 }
 
-.card.earned {
-  border-color: var(--teal);
-  border-left-color: var(--teal);
-}
+.card.grade-platinum { border-left-color: var(--platinum); }
+.card.grade-gold { border-left-color: var(--gold); }
+.card.grade-silver { border-left-color: var(--silver); }
+.card.grade-bronze { border-left-color: var(--bronze); }
+.card.earned { outline: 2px solid var(--teal); }
 
-.card-head {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+.card-top { display: flex; gap: 10px; align-items: flex-start; }
+.card-check { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--teal); flex: none; cursor: pointer; }
+.card-name { font-size: 22px; line-height: 1.1; margin: 0; flex: 1; }
+.card-desc { margin: 6px 0 8px; color: var(--muted); font-style: italic; }
 
-.card-head input[type="checkbox"] {
-  accent-color: var(--pink);
-  cursor: pointer;
-  height: 22px;
-  width: 22px;
-}
-
-.card-head h3 {
-  color: white;
-  flex: 1 1 auto;
-  font-size: 18px;
-  margin: 0;
-  min-width: 200px;
-}
-
-.card.earned .card-head h3 {
-  text-decoration: line-through;
-  text-decoration-color: var(--teal);
-}
-
-.grade,
-.kind,
+.badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 .badge {
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .06em;
-  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.grade-platinum {
-  background: var(--ice);
-  color: #083038;
-}
-
-.grade-gold {
-  background: var(--gold);
-  color: #3a2a05;
-}
-
-.grade-silver {
-  background: var(--silver);
-  color: #22303a;
-}
-
-.grade-bronze {
-  background: var(--rust);
-  color: #2e1a08;
-}
-
-.kind {
-  background: var(--bg1);
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #0e0518;
   border: 1px solid var(--line);
-  color: var(--soft);
 }
-
+.badge.grade-platinum { color: var(--platinum); border-color: var(--platinum); }
+.badge.grade-gold { color: var(--gold); border-color: var(--gold); }
+.badge.grade-silver { color: var(--silver); border-color: var(--silver); }
+.badge.grade-bronze { color: var(--bronze); border-color: var(--bronze); }
 .badge.missable {
-  background: var(--alarm);
-  box-shadow: 0 0 10px rgba(230, 57, 70, .6);
-  color: white;
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  box-shadow: 0 0 12px var(--red);
+  animation: missable-pulse 1.6s ease-in-out infinite;
 }
-
-.badge.atrisk {
-  background: var(--flame);
-  color: #2e1a08;
+@keyframes missable-pulse {
+  0%, 100% { box-shadow: 0 0 6px var(--red); }
+  50% { box-shadow: 0 0 16px var(--red); }
 }
+.badge.kind { color: var(--teal); border-color: var(--teal); }
 
-.badge.unconf {
-  background: transparent;
-  border: 1px dashed var(--gold);
-  color: var(--gold);
-}
-
-.timepill {
-  background: var(--bg1);
-  border: 1px solid var(--gold);
-  border-radius: 999px;
-  color: var(--gold);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .06em;
-  padding: 4px 9px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.desc {
-  color: var(--soft);
-  font-style: italic;
-  margin: 8px 0 6px;
-}
-
-.guide {
-  margin: 6px 0;
-}
-
-.steps {
-  margin: 6px 0 4px 20px;
-  padding: 0;
-}
-
-.steps li {
-  margin: 3px 0;
-}
-
-.sources {
-  color: var(--soft);
-  font-size: 13px;
-  margin: 8px 0 0;
-}
-
-.hidden-note {
-  color: var(--gold);
-}
-
-/* Roadmap tab */
-.roadmap-intro {
-  color: var(--pale);
-  font-size: 16px;
-}
-
-.stage {
-  margin-bottom: 24px;
-}
-
-.stage > h3 {
-  color: var(--gold);
-  font-family: "Pricedown", "Arial Black", sans-serif;
-  font-size: 34px;
-  font-weight: 400;
-  letter-spacing: .03em;
-  margin: 0 0 4px;
-}
-
-.stage-text {
-  color: var(--pale);
-  margin: 0 0 4px;
-}
-
-.stage-meta {
-  color: var(--pink);
+.time-pill {
+  display: inline-block;
   font-size: 13px;
   font-weight: 700;
-  margin: 0 0 10px;
+  color: var(--gold);
+  background: #0e0518;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-bottom: 8px;
 }
 
-/* Footer: sources and honesty notes. */
-footer {
-  border-top: 2px solid var(--line);
-  color: var(--soft);
-  font-size: 14px;
-  margin-top: 32px;
-  padding-top: 16px;
-}
+.card-guide { margin: 0 0 8px; }
+.card-source { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+.card-source strong { color: var(--ink); }
+.card details { margin-top: 4px; }
+.card summary { cursor: pointer; font-weight: 700; color: var(--gold); }
+.card ol { margin: 8px 0 0; padding-left: 22px; }
+.card li { margin-bottom: 4px; }
 
-footer h2 {
+.spoiler-hidden .card-name,
+.spoiler-hidden .card-desc,
+.spoiler-hidden .card-guide,
+.spoiler-hidden .card-source,
+.spoiler-hidden .card details { display: none; }
+.spoiler-note { margin: 0; color: var(--muted); font-style: italic; }
+
+.empty-note { color: var(--muted); grid-column: 1 / -1; }
+
+/* ---------- roadmap ---------- */
+.roadmap-intro { color: var(--muted); margin: 0 0 16px; }
+.stage {
+  background: linear-gradient(135deg, var(--card1), var(--card2));
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.stage-title { font-size: 26px; margin: 0 0 4px; color: var(--gold); }
+.stage-meta { margin: 0 0 10px; color: var(--muted); font-size: 14px; }
+.stage-list { margin: 0; padding-left: 20px; }
+.stage-list li { margin-bottom: 5px; }
+.stage-list .done { text-decoration: line-through; color: var(--muted); }
+.stage-time { font-weight: 700; color: var(--gold); }
+
+/* ---------- tools ---------- */
+.tools { margin-top: 28px; background: var(--bg2); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+.tools h2 { margin: 0 0 10px; font-size: 24px; }
+.tools-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.tools-row button, .import-label {
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #0e0518;
   color: var(--ink);
-  font-family: "Pricedown", "Arial Black", sans-serif;
-  font-size: 26px;
-  font-weight: 400;
-  letter-spacing: .03em;
-  margin: 0 0 8px;
+  font-size: 15px;
+  cursor: pointer;
 }
+.tools-row button:hover, .import-label:hover { border-color: var(--pink); }
+.tools-note { color: var(--muted); font-size: 14px; margin: 10px 0 0; }
 
-footer li {
-  margin: 6px 0;
-}
-
-@media (max-width: 640px) {
-  h1 {
-    font-size: 52px;
-  }
-
-  .cover-grid {
-    height: 220px;
-  }
-
-  .controls input[type="search"] {
-    width: 100%;
-  }
+/* ---------- narrow screens ---------- */
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; padding: 20px; }
+  .hero-text h1 { font-size: 48px; }
+  .cards { grid-template-columns: 1fr; }
 }
