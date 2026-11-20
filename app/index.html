@@ -7,95 +7,113 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="masthead">
-  <div class="masthead-inner">
-    <p class="kicker">Grand Theft Auto VI &middot; PlayStation 5 &middot; 55 Trophies</p>
-    <h1>Leonida Legend</h1>
-    <p class="tagline">The complete trophy guide and tracker for GTA VI — every trophy, every step, every hour counted.</p>
-    <div class="hero-grid" id="heroGrid" aria-label="Cover panels"></div>
+<header class="hero">
+  <div class="hero-panels" aria-hidden="true">
+    <img src="panels/heli.jpg" alt="">
+    <img src="panels/couple.jpg" alt="">
+    <img src="panels/bike.jpg" alt="">
+    <img src="panels/car.jpg" alt="">
+    <img src="panels/city.jpg" alt="">
+    <img src="panels/gunman.jpg" alt="">
+    <img src="panels/gator.jpg" alt="">
+    <img src="panels/flamingo.jpg" alt="">
+    <img src="panels/boat.jpg" alt="">
+  </div>
+  <div class="hero-text">
+    <h1>LEONIDA LEGEND</h1>
+    <p class="tagline">GTA 6 Trophy Guide &amp; Tracker — all 55 trophies, every guide in our own words, with a roadmap to the platinum.</p>
     <div class="progress-wrap">
-      <div class="progress-line">
-        <span id="progressText">0 / 55 earned</span>
-        <span id="timeLeft">~73h 10m of trophy work left &middot; full run ~73h</span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-      <div class="grade-stats" id="gradeStats"></div>
+      <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+      <p id="progress-text" class="progress-text">0 / 55 earned</p>
     </div>
+    <p id="grade-stats" class="grade-stats"></p>
+    <p id="time-left" class="time-left"></p>
   </div>
 </header>
 
 <nav class="tabs" role="tablist">
-  <button class="tab active" data-tab="checklist" role="tab" aria-selected="true">Checklist</button>
-  <button class="tab" data-tab="roadmap" role="tab" aria-selected="false">Roadmap to Platinum</button>
+  <button id="tab-checklist" class="tab active" role="tab" aria-selected="true">Checklist</button>
+  <button id="tab-roadmap" class="tab" role="tab" aria-selected="false">Roadmap to Platinum</button>
 </nav>
 
 <main>
-  <section id="tab-checklist" class="tabpane active">
+  <section id="view-checklist" class="view">
     <div class="toolbar">
-      <input type="search" id="searchBox" placeholder="Search trophies, guides, difficulty…" aria-label="Search trophies">
-      <select id="gradeFilter" aria-label="Filter by grade">
-        <option value="all">All grades</option>
-        <option value="platinum">Platinum</option>
-        <option value="gold">Gold</option>
-        <option value="silver">Silver</option>
-        <option value="bronze">Bronze</option>
-      </select>
-      <select id="sortControl" aria-label="Sort trophies">
-        <option value="default">Roadmap order</option>
-        <option value="quickest">Quickest first</option>
-        <option value="longest">Longest first</option>
-      </select>
-      <select id="difficultyFilter" aria-label="Filter by difficulty">
-        <option value="all">Any difficulty</option>
-        <option value="1">Difficulty 1 — Quick</option>
-        <option value="2">Difficulty 2 — Easy</option>
-        <option value="3">Difficulty 3 — Moderate</option>
-        <option value="4">Difficulty 4 — Hard</option>
-        <option value="5">Difficulty 5 — Marathon</option>
-      </select>
-      <label class="toggle"><input type="checkbox" id="earnedOnly"> Hide earned</label>
-      <label class="toggle"><input type="checkbox" id="spoilerToggle" checked> Spoiler-safe (hide hidden trophies)</label>
+      <input id="search" type="search" placeholder="Search trophies, guides, difficulty..." aria-label="Search trophies">
+      <label>Grade
+        <select id="grade-filter">
+          <option value="all">All grades</option>
+          <option value="platinum">Platinum</option>
+          <option value="gold">Gold</option>
+          <option value="silver">Silver</option>
+          <option value="bronze">Bronze</option>
+        </select>
+      </label>
+      <label>Sort
+        <select id="sort">
+          <option value="default">Roadmap order</option>
+          <option value="quickest">Quickest first</option>
+          <option value="longest">Longest first</option>
+        </select>
+      </label>
+      <label>Difficulty
+        <select id="diff-filter">
+          <option value="all">Any difficulty</option>
+          <option value="1">1 — Easy</option>
+          <option value="2">2 — Straightforward</option>
+          <option value="3">3 — Moderate</option>
+          <option value="4">4 — Hard</option>
+          <option value="5">5 — Marathon</option>
+        </select>
+      </label>
+      <label class="check"><input id="hide-earned" type="checkbox"> Hide earned</label>
+      <label class="check"><input id="spoiler-toggle" type="checkbox" checked> Hide spoilers</label>
     </div>
-    <div class="kind-chips" id="kindChips" role="group" aria-label="Filter by kind">
-      <button class="chip active" data-kind="all">All kinds</button>
-      <button class="chip" data-kind="story">Story</button>
-      <button class="chip" data-kind="activities">Activities</button>
-      <button class="chip" data-kind="collectibles">Collectibles</button>
-      <button class="chip" data-kind="missable">Missable</button>
+    <div class="kinds" id="kind-chips">
+      <button class="kind-chip active" data-kind="all">All kinds</button>
+      <button class="kind-chip" data-kind="story">Story</button>
+      <button class="kind-chip" data-kind="activities">Activities</button>
+      <button class="kind-chip" data-kind="collectibles">Collectibles</button>
+      <button class="kind-chip" data-kind="missable">Missable</button>
     </div>
-    <p class="missable-note">Only one trophy can be missed: <strong>Positive Mental Attitude</strong> — keep a manual Chapter 1 save.</p>
-    <div class="card-grid" id="cardGrid"></div>
-    <p class="empty-note" id="emptyNote" hidden>No trophies match your filters.</p>
+    <p id="count" class="count"></p>
+    <div id="cards" class="cards"></div>
+    <p id="empty" class="empty" hidden>No trophies match these filters.</p>
   </section>
 
-  <section id="tab-roadmap" class="tabpane">
-    <p class="roadmap-intro">Six stages, in platinum order. Finish a stage, move to the next — the clock beside each stage is what is left to do in it.</p>
-    <div id="roadmapStages"></div>
+  <section id="view-roadmap" class="view" hidden>
+    <p class="roadmap-intro">Six stages in platinum order. Work them top to bottom; each stage shows its remaining time so you always know what is left.</p>
+    <div id="roadmap" class="roadmap"></div>
   </section>
 
-  <section class="detail" id="detailPanel" hidden>
-    <button class="detail-close" id="detailClose" aria-label="Close guide">×</button>
-    <div id="detailBody"></div>
+  <section class="tools">
+    <h2>Your progress</h2>
+    <p>Progress saves in this browser (localStorage). Export a backup file, import it back on another machine, or reset and start over.</p>
+    <div class="tool-buttons">
+      <button id="export-btn">Export progress (JSON)</button>
+      <button id="import-btn">Import progress</button>
+      <input id="import-file" type="file" accept="application/json,.json" hidden>
+      <button id="reset-btn" class="danger">Reset progress</button>
+    </div>
+    <p id="tool-msg" class="tool-msg" role="status"></p>
   </section>
-
-  <section class="io-bar">
-    <button id="exportBtn">Export progress (JSON)</button>
-    <label class="import-label">Import progress <input type="file" id="importFile" accept="application/json" hidden></label>
-    <button id="resetBtn">Reset progress</button>
-  </section>
-
-  <footer class="sources">
-    <h2>Sources</h2>
-    <p>Every guide in this tracker cites where its facts were cross-checked. Trophy names, descriptions and grades are the official PlayStation list as published before this guide was written.</p>
-    <ul>
-      <li><a href="https://www.exophase.com/game/grand-theft-auto-vi-psn/trophies/">Exophase — GTA VI trophy list</a></li>
-      <li><a href="https://psnprofiles.com/trophies/grand-theft-auto-vi">PSNProfiles — GTA VI trophies</a></li>
-      <li><a href="https://outputlag.com/">OutputLag — GTA VI guides</a> (further reading)</li>
-      <li><a href="https://planetgta6.com/">PlanetGTA6 — GTA VI news and guides</a> (further reading)</li>
-    </ul>
-    <p class="disclaimer">Unofficial fan guide. Not affiliated with Rockstar Games or PlayStation. Counts marked COUNT UNCONFIRMED are the guide's honest flags where a total is not yet verified.</p>
-  </footer>
 </main>
+
+<footer>
+  <h2>Sources</h2>
+  <p>Guides are written in our own words for this entry. Facts were cross-checked against the trophy lists at
+    <a href="https://www.exophase.com/game/grand-theft-auto-vi/trophies/">Exophase</a> and
+    <a href="https://psnprofiles.com/trophies/">PSNProfiles</a>,
+    with further reading at <a href="https://outputlag.com/">OutputLag</a> and
+    <a href="https://planetgta.com/">PlanetGTA6</a>. A source is cited, never copied; the official trophy names,
+    descriptions and grades are shown exactly as PlayStation publishes them.</p>
+  <p class="honest">Honesty notes: four counts are flagged COUNT UNCONFIRMED in the guides (18 meditation spots,
+    3 card sets, 100 WAiNK locations, 52 Leonida areas) — the game is unreleased and these totals are the best
+    public figures, not confirmed in-game counts. Only one trophy is confirmed missable: Positive Mental Attitude.
+    Time estimates are honest guesses for an average player; your mileage will vary.</p>
+  <p class="meta">Leonida Legend — GTA 6 Trophy Guide &amp; Tracker. 55 trophies: 1 platinum, 2 gold, 6 silver, 46 bronze. 28 hidden.</p>
+</footer>
+
 <script type="module" src="app.js"></script>
 </body>
 </html>
