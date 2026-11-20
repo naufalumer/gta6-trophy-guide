@@ -273,6 +273,19 @@ h1 {
   margin: 4px 0 12px;
 }
 
+.estimate-note {
+  color: var(--soft);
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+.timeleft {
+  color: var(--gold);
+  font-size: 14px;
+  font-weight: 700;
+  margin: 6px 0 0;
+}
+
 /* Trophy cards */
 .list {
   display: grid;
@@ -372,6 +385,19 @@ h1 {
   background: transparent;
   border: 1px dashed var(--gold);
   color: var(--gold);
+}
+
+.timepill {
+  background: var(--bg1);
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  padding: 4px 9px;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .desc {
