@@ -14,8 +14,7 @@
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { readFileSync, readdirSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-frontend.ts';
@@ -23,36 +22,40 @@ import { buildDossier } from './vendor/makefun-frontend.ts';
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-// Leonida Legend pre-flight: the guide data must be complete before anything
-// is copied, so a broken trophies.json fails here with a plain message
-// instead of producing a dossier for an empty or half-written guide.
-function checkGuide() {
-  const dataPath = join(here, 'app', 'data', 'trophies.json');
-  const parsed = JSON.parse(readFileSync(dataPath, 'utf8'));
-  const list = Array.isArray(parsed) ? parsed : parsed.trophies;
-  if (!Array.isArray(list) || list.length !== 55) {
-    throw new Error('trophies.json must hold exactly 55 trophies');
-  }
-  for (const trophy of list) {
-    for (const field of ['name', 'description', 'grade', 'guide', 'est_minutes', 'difficulty']) {
-      if (trophy[field] === undefined || trophy[field] === null || trophy[field] === '') {
-        throw new Error(`trophy ${trophy.id ?? '?'} is missing ${field}`);
-      }
-    }
-  }
-  const shotsDir = join(here, 'screenshots');
-  const shots = existsSync(shotsDir)
-    ? readdirSync(shotsDir).filter((f) => f.endsWith('.jpg')).length
-    : 0;
-  return { trophies: list.length, screenshots: shots };
-}
-
-const guideCheck = checkGuide();
-
 mkdirSync(out, { recursive: true });
 cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
 mkdirSync(join(out, 'screenshots'), { recursive: true });
 if (existsSync(join(here, 'screenshots'))) cpSync(join(here, 'screenshots'), join(out, 'screenshots'), { recursive: true });
+
+// Leonida Legend check: the guide is only worth handing in if its data is whole —
+// exactly 55 trophies, each with its official name, description, grade and a
+// non-blank guide, plus 3 or 4 screenshots. Refuse loudly instead of handing in
+// a half-built guide.
+function checkGuide(): { trophies: number; screenshots: number } {
+  const data = JSON.parse(readFileSync(join(here, 'app', 'data', 'trophies.json'), 'utf8'));
+  const list = Array.isArray(data) ? data : data.trophies;
+  if (!Array.isArray(list) || list.length !== 55) {
+    throw new Error(`Leonida Legend expects exactly 55 trophies, found ${Array.isArray(list) ? list.length : 'none'}`);
+  }
+  for (const t of list) {
+    for (const field of ['name', 'description', 'grade', 'guide']) {
+      if (typeof t[field] !== 'string' || t[field].trim() === '') {
+        throw new Error(`trophy ${t.id ?? '?'} is missing a non-blank ${field}`);
+      }
+    }
+    if (typeof t.est_minutes !== 'number' || typeof t.difficulty !== 'number') {
+      throw new Error(`trophy ${t.id ?? '?'} is missing its time estimate or difficulty`);
+    }
+  }
+  const shots = readdirSync(join(here, 'screenshots')).filter((f) => /\.(png|jpe?g)$/i.test(f));
+  if (shots.length < 3 || shots.length > 4) {
+    throw new Error(`Leonida Legend expects 3 or 4 screenshots, found ${shots.length}`);
+  }
+  return { trophies: list.length, screenshots: shots.length };
+}
+
+const guide = checkGuide();
+console.log(`Leonida Legend: ${guide.trophies} trophies, ${guide.screenshots} screenshots -> out`);
 
 // The scorer's own caps (reference/gate.json): only text_max_bytes shapes the bytes; the others refuse an entry the
 // scorer would refuse (more than 4 screenshots or one over 256 KiB; more than 993 files and directories in app/ or
@@ -61,5 +64,3 @@ writeFileSync(
   join(out, 'dossier.json'),
   buildDossier(out, { text_max_bytes: 163840, screenshots: { max: 4, max_bytes: 262144 }, app_max_files: 993, app_max_bytes: 50331648 }),
 );
-
-console.log(`Leonida Legend: ${guideCheck.trophies} trophies, ${guideCheck.screenshots} screenshots -> ${out}`);
