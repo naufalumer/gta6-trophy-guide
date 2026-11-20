@@ -56,6 +56,8 @@ function setSpoilerPref(hidden) {
 const store = {
   earned: loadEarned(),
   filter: "all",
+  sort: "default",
+  diff: "all",
   trophies: [],
   byName: new Map(),
 };
@@ -78,6 +80,58 @@ const KIND_LABELS = {
   collectibles: "Collectibles",
   activities: "Activities",
 };
+
+/* ---------- time & difficulty estimates ----------
+   est_minutes and difficulty are rough averages for one average player,
+   written into trophies.json as estimates, not official figures: they
+   overlap (story playtime counts toward many trophies at once), so their
+   sum is focused trophy work, not the full run — the full run stays
+   ~200 h per launch-week guides. */
+const DIFF_LABELS = {
+  1: "Easy",
+  2: "Fair",
+  3: "Grindy",
+  4: "Tough",
+  5: "Marathon",
+};
+
+function fmtTime(mins) {
+  if (mins <= 0) return "—";
+  if (mins < 60) return "~" + mins + "m";
+  const hours = Math.floor(mins / 60);
+  const rest = mins % 60;
+  return rest === 0 ? "~" + hours + "h" : "~" + hours + "h " + rest + "m";
+}
+
+function timeTag(trophy) {
+  const mins = trophy.est_minutes ?? 0;
+  const diff = trophy.difficulty ?? 1;
+  const label = DIFF_LABELS[diff] || "Fair";
+  return tag("span", "timepill", "EST " + fmtTime(mins) + " · " + label + " " + diff + "/5");
+}
+
+function remainingMinutes() {
+  return store.trophies.reduce((sum, trophy) => {
+    if (store.earned.has(trophy.name)) return sum;
+    return sum + (trophy.est_minutes ?? 0);
+  }, 0);
+}
+
+function remainingText() {
+  const mins = remainingMinutes();
+  if (mins <= 0) return "Nothing left but the platinum pop.";
+  return fmtTime(mins) + " of trophy work left · full run ~200 h";
+}
+
+function sortedTrophies(list) {
+  if (store.sort === "quickest") {
+    return [...list].sort((a, b) => (a.est_minutes ?? 0) - (b.est_minutes ?? 0) || a.stage - b.stage || a.id - b.id);
+  }
+  if (store.sort === "longest") {
+    return [...list].sort((a, b) => (b.est_minutes ?? 0) - (a.est_minutes ?? 0) || a.stage - b.stage || a.id - b.id);
+  }
+  return list;
+}
 
 /* ---------- card builders ---------- */
 function gradeTag(trophy) {
@@ -114,6 +168,7 @@ function buildCard(trophy) {
   head.append(tag("h3", null, hidden ? "Hidden story trophy" : trophy.name));
   head.append(gradeTag(trophy));
   head.append(kindTag(trophy));
+  head.append(timeTag(trophy));
   if (trophy.missable && trophy.kind !== "missable") head.append(flagTag("missable", "MISSABLE"));
   if (trophy.at_risk) head.append(flagTag("atrisk", "TIME-SENSITIVE", trophy.at_risk));
   if (trophy.unconfirmed) head.append(flagTag("unconf", "COUNT UNCONFIRMED", "This count comes from launch-week lists and has not been independently re-verified."));
@@ -147,9 +202,10 @@ function visible(trophy) {
   const grade = el("grade").value;
   if (store.filter !== "all" && trophy.kind !== store.filter) return false;
   if (grade !== "all" && trophy.grade !== grade) return false;
+  if (store.diff !== "all" && String(trophy.difficulty ?? 1) !== store.diff) return false;
   if (el("earnedonly").checked && !store.earned.has(trophy.name)) return false;
   if (!query) return true;
-  const haystacks = [trophy.name, trophy.description, trophy.guide];
+  const haystacks = [trophy.name, trophy.description, trophy.guide, DIFF_LABELS[trophy.difficulty ?? 1]];
   return haystacks.some((field) => field.toLowerCase().includes(query));
 }
 
@@ -169,10 +225,11 @@ function renderTotals() {
     ["platinum", "gold", "silver", "bronze"]
       .map((grade) => counts[grade][0] + "/" + counts[grade][1] + " " + grade)
       .join(" · ") + " · " + HOURS_LINE;
+  el("timeleft").textContent = remainingText();
 }
 
 function renderList() {
-  const shown = store.trophies.filter(visible);
+  const shown = sortedTrophies(store.trophies.filter(visible));
   const list = el("list");
   list.replaceChildren();
   shown.forEach((trophy) => list.append(buildCard(trophy)));
@@ -192,7 +249,9 @@ function renderRoadmap() {
     section.append(tag("p", "stage-text", text));
     const inStage = store.trophies.filter((t) => t.stage === no);
     const done = inStage.filter((t) => store.earned.has(t.name)).length;
-    section.append(tag("p", "stage-meta", done + "/" + inStage.length + " earned in this stage"));
+    const stageLeft = inStage.reduce((sum, trophy) => (store.earned.has(trophy.name) ? sum : sum + (trophy.est_minutes ?? 0)), 0);
+    const stageLeftText = stageLeft > 0 ? fmtTime(stageLeft) + " of work left here" : "stage cleared";
+    section.append(tag("p", "stage-meta", done + "/" + inStage.length + " earned in this stage · " + stageLeftText));
     inStage.forEach((trophy) => section.append(buildCard(trophy)));
     road.append(section);
   });
@@ -215,6 +274,17 @@ function bindChips() {
       store.filter = chip.dataset.kind;
       renderAll();
     });
+  });
+}
+
+function bindTimeControls() {
+  el("sort").addEventListener("change", () => {
+    store.sort = el("sort").value;
+    renderAll();
+  });
+  el("diff").addEventListener("change", () => {
+    store.diff = el("diff").value;
+    renderAll();
   });
 }
 
@@ -287,6 +357,7 @@ async function start() {
   store.byName = new Map(store.trophies.map((t) => [t.name, t]));
   bindChips();
   bindControls();
+  bindTimeControls();
   bindProgressIO();
   bindTabs();
   renderAll();
