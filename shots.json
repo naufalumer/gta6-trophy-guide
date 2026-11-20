@@ -1,1 +1,1 @@
-[{"file":"1-checklist.jpg","path":"/?demo=1","viewport":{"height":800,"width":1280}},{"file":"2-missable.jpg","path":"/?kind=missable","viewport":{"height":800,"width":1280}},{"file":"3-roadmap.jpg","path":"/?tab=roadmap","viewport":{"height":800,"width":1280}}]
+[{"file":"1-checklist.jpg","path":"/?demo=1&spoiler=off","viewport":{"height":800,"width":1280}},{"file":"2-missable.jpg","path":"/?kind=missable&spoiler=off","viewport":{"height":800,"width":1280}},{"file":"3-roadmap.jpg","path":"/?tab=roadmap","viewport":{"height":800,"width":1280}}]
