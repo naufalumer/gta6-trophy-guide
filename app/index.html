@@ -29,6 +29,7 @@
         <div class="bar-fill" id="barfill"></div>
       </div>
       <p class="stats" id="stats"></p>
+      <p class="timeleft" id="timeleft"></p>
     </div>
   </header>
 
@@ -52,6 +53,23 @@
             <option value="bronze">Bronze</option>
           </select>
         </label>
+        <label>Sort
+          <select id="sort">
+            <option value="default">Roadmap order</option>
+            <option value="quickest">Quickest first</option>
+            <option value="longest">Longest first</option>
+          </select>
+        </label>
+        <label>Difficulty
+          <select id="diff">
+            <option value="all">All difficulties</option>
+            <option value="1">1 · Easy</option>
+            <option value="2">2 · Fair</option>
+            <option value="3">3 · Grindy</option>
+            <option value="4">4 · Tough</option>
+            <option value="5">5 · Marathon</option>
+          </select>
+        </label>
         <label class="check">
           <input id="spoiler" type="checkbox"> Hide story spoilers
         </label>
@@ -71,6 +89,7 @@
         <button class="chip" data-kind="collectibles" type="button">Collectibles</button>
         <button class="chip" data-kind="activities" type="button">Activities</button>
       </div>
+      <p class="estimate-note">Times are rough estimates for one average player, not official figures — story playtime counts toward many trophies at once, so the total is focused trophy work, not the full run.</p>
       <p class="count" id="count"></p>
       <div class="list" id="list"></div>
     </section>
