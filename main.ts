@@ -15,12 +15,39 @@
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
 import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-frontend.ts';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+
+// Leonida Legend pre-flight: the guide data must be complete before anything
+// is copied, so a broken trophies.json fails here with a plain message
+// instead of producing a dossier for an empty or half-written guide.
+function checkGuide() {
+  const dataPath = join(here, 'app', 'data', 'trophies.json');
+  const parsed = JSON.parse(readFileSync(dataPath, 'utf8'));
+  const list = Array.isArray(parsed) ? parsed : parsed.trophies;
+  if (!Array.isArray(list) || list.length !== 55) {
+    throw new Error('trophies.json must hold exactly 55 trophies');
+  }
+  for (const trophy of list) {
+    for (const field of ['name', 'description', 'grade', 'guide', 'est_minutes', 'difficulty']) {
+      if (trophy[field] === undefined || trophy[field] === null || trophy[field] === '') {
+        throw new Error(`trophy ${trophy.id ?? '?'} is missing ${field}`);
+      }
+    }
+  }
+  const shotsDir = join(here, 'screenshots');
+  const shots = existsSync(shotsDir)
+    ? readdirSync(shotsDir).filter((f) => f.endsWith('.jpg')).length
+    : 0;
+  return { trophies: list.length, screenshots: shots };
+}
+
+const guideCheck = checkGuide();
 
 mkdirSync(out, { recursive: true });
 cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
@@ -34,3 +61,5 @@ writeFileSync(
   join(out, 'dossier.json'),
   buildDossier(out, { text_max_bytes: 163840, screenshots: { max: 4, max_bytes: 262144 }, app_max_files: 993, app_max_bytes: 50331648 }),
 );
+
+console.log(`Leonida Legend: ${guideCheck.trophies} trophies, ${guideCheck.screenshots} screenshots -> ${out}`);
