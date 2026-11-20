@@ -1,85 +1,45 @@
-// Serves the trophy guide's app/ folder over HTTP for local testing.
-// Node 22, standard library only. Run `node serve.ts` (or
-// `node serve.ts --port <n>`) and open http://localhost:8080.
-// It only serves files inside app/, sends the right MIME types, and does
-// nothing else — a dev convenience, not a production server.
-import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { createReadStream, statSync } from "node:fs";
-import { extname, join, normalize, resolve, sep } from "node:path";
-import { fileURLToPath } from "node:url";
+// Leonida Legend dev server: serves app/ on loopback only, no network use.
+// Run: node serve.ts  (then open http://localhost:8080)
 
-const APP_ROOT = resolve(fileURLToPath(new URL("./app", import.meta.url)));
+import { createServer } from "node:http";
+import { readFile } from "node:fs/promises";
+import { join, extname, normalize } from "node:path";
 
-const MIME_BY_EXT: Record<string, string> = {
+const ROOT = new URL("./app/", import.meta.url).pathname;
+const PORT = 8080;
+
+const TYPES: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
   ".mjs": "text/javascript; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
   ".json": "application/json; charset=utf-8",
-  ".svg": "image/svg+xml",
-  ".png": "image/png",
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
-  ".webp": "image/webp",
-  ".ico": "image/x-icon",
-  ".woff2": "font/woff2",
-  ".webmanifest": "application/manifest+json",
+  ".png": "image/png",
+  ".otf": "font/otf",
 };
 
-function mimeOf(file: string): string {
-  return MIME_BY_EXT[extname(file).toLowerCase()] ?? "application/octet-stream";
-}
-
-function sendText(res: ServerResponse, code: number, body: string): void {
-  res.writeHead(code).end(body);
-}
-
-function locateFile(rawPath: string): string | null {
-  let path = rawPath;
-  if (path.endsWith("/")) path += "index.html";
-  const file = resolve(join(APP_ROOT, normalize(path)));
-  if (file !== APP_ROOT && !file.startsWith(APP_ROOT + sep)) return null;
-  return file;
-}
-
-function portFromArgs(argv: string[]): number {
-  const at = argv.indexOf("--port");
-  const wanted = at === -1 ? 8080 : Number(argv[at + 1]);
-  if (Number.isInteger(wanted) && wanted > 0 && wanted < 65536) return wanted;
-  return 8080;
-}
-
-function serve(req: IncomingMessage, res: ServerResponse): void {
-  let pathname: string;
+const server = createServer(async (req, res) => {
+  const url = new URL(req.url ?? "/", "http://localhost");
+  let path = decodeURIComponent(url.pathname);
+  if (path === "/") path = "/index.html";
+  const file = join(ROOT, normalize(path));
+  if (!file.startsWith(ROOT)) {
+    res.writeHead(403);
+    res.end("forbidden");
+    return;
+  }
   try {
-    pathname = decodeURIComponent(new URL(req.url ?? "/", "http://localhost").pathname);
+    const body = await readFile(file);
+    res.writeHead(200, { "content-type": TYPES[extname(file)] ?? "application/octet-stream" });
+    res.end(body);
   } catch {
-    sendText(res, 400, "bad request");
-    return;
+    res.writeHead(404);
+    res.end("not found");
   }
-  const file = locateFile(pathname);
-  if (file === null) {
-    sendText(res, 403, "forbidden");
-    return;
-  }
-  let size: number;
-  try {
-    const info = statSync(file);
-    if (!info.isFile()) throw new Error("not a file");
-    size = info.size;
-  } catch {
-    sendText(res, 404, "not found");
-    return;
-  }
-  res.writeHead(200, {
-    "content-type": mimeOf(file),
-    "content-length": size,
-    "cache-control": "no-store",
-  });
-  createReadStream(file).pipe(res);
-}
+});
 
-const port = portFromArgs(process.argv.slice(2));
-createServer(serve).listen(port, "127.0.0.1", () => {
-  console.log(`app/ is on http://localhost:${port}`);
+server.listen(PORT, "127.0.0.1", () => {
+  console.log("Leonida Legend at http://localhost:" + PORT);
 });
